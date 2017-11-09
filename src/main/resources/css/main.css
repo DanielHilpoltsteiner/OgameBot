@@ -1,0 +1,46 @@
+.root {
+
+    -fx-base: base;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    base: #252526;
+    textColor: #dbd9d9;
+
+}
+
+.scrollPane{
+    -fx-box-border: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.smallNumberField{
+    -fx-pref-width: 60px;
+    -fx-max-width: 60px;
+}
+.middleNumberField{
+    -fx-pref-width: 70px;
+    -fx-max-width: 70px;
+}
+.tree-view{
+    -fx-box-border: transparent;
+}
+.overViewText{
+    -fx-fill: textColor;
+}
+.overViewTitles{
+    -fx-font-size: 20px;
+}
+.overViewGridText{
+    -fx-font-size: 13px;
+}
+.tab-pane{
+    -fx-box-border: transparent;
+}
+.tab-label{
+    -fx-text-fill: textColor;
+}
+.label{
+    -fx-text-fill: textColor;
+}
+
