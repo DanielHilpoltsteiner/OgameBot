@@ -37,7 +37,7 @@
                 <Insets/>
             </BorderPane.margin>
             <children>
-                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                <HBox fx:id="planetValuesContainer" alignment="CENTER_LEFT" spacing="5.0">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metall:" HBox.hgrow="ALWAYS">
                             <HBox.margin>
@@ -49,9 +49,10 @@
                             </styleClass>
                         </Text>
                         <Text fx:id="metalValue" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="overViewText"/>
+                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kristall:">
                             <HBox.margin>
-                                <Insets left="20.0"/>
+                                <Insets/>
                             </HBox.margin>
                             <styleClass>
                                 <String fx:value="overViewText"/>
@@ -59,9 +60,10 @@
                             </styleClass>
                         </Text>
                         <Text fx:id="crystalValue" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="overViewText"/>
+                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deuterium:">
                             <HBox.margin>
-                                <Insets left="20.0"/>
+                                <Insets/>
                             </HBox.margin>
                             <styleClass>
                                 <String fx:value="overViewText"/>
@@ -69,10 +71,11 @@
                             </styleClass>
                         </Text>
                         <Text fx:id="deutValue" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="overViewText"/>
+                        <Region HBox.hgrow="ALWAYS"/>
                         <Hyperlink fx:id="detailsLink" alignment="CENTER_RIGHT" onAction="#showDetails" text="Erweitert"
                                    HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets left="20.0"/>
+                                <Insets/>
                             </HBox.margin>
                         </Hyperlink>
                     </children>

@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.converter.NumberStringConverter;
 import units.Building.Building;
@@ -64,7 +65,7 @@ public class OverView implements Initializable {
     private ObjectProperty<Player> currentPlayer = new SimpleObjectProperty<>();
     @FXML
     private Hyperlink detailsLink;
-    private Map<UnitType, TextField> fields = new HashMap<>();
+    private Map<UnitType, Spinner<Integer>> fields = new HashMap<>();
     @FXML
     private ListView<Planet> planetList;
 
@@ -93,17 +94,52 @@ public class OverView implements Initializable {
         }
     }
 
+    private DetailMode detailMode = DetailMode.NORMAL;
+
+    @FXML
+    private HBox planetValuesContainer;
+
     @FXML
     void showDetails() {
         detailsLink.setVisited(false);
-        detailsLink.setText("Normal");
 
+        if (detailMode == DetailMode.NORMAL) {
+            detailMode = DetailMode.DETAILS;
+
+            detailsLink.setText("Normal");
+        } else {
+            detailMode = DetailMode.NORMAL;
+        }
+        detailMode.change(this);
         // TODO: 09.11.2017 calculate the point value of each building and show it in new column
         // TODO: 09.11.2017 show grid in table-form, with "column titles"
         // TODO: 09.11.2017 show "production" of each building (production of mines, reduction for accelerators, power of machines)
         // TODO: 09.11.2017 show energy, available vs used
     }
 
+    private void fillGrid(UnitType[] values, GridPane grid, String numberFieldCss, int maxNumber, int maxChars) {
+        for (int i = 0; i < values.length; i++) {
+            UnitType value = values[i];
+
+            Text text = new Text(value.getName());
+            text.getStyleClass().add("overViewGridText");
+            text.getStyleClass().add("overViewText");
+
+
+            grid.addRow(i);
+            grid.add(text, 0, i);
+
+//            TextField numberField = getNumberTextField(maxChars);
+            Spinner<Integer> numberField = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, maxNumber, 0));
+            numberField.getEditor().setTextFormatter(getTextFormatter(maxChars));
+            numberField.setEditable(true);
+            numberField.getStyleClass().add(numberFieldCss);
+            // TODO: 09.11.2017 checkbox for shields
+            grid.add(numberField, 1, i);
+
+            fields.put(value, numberField);
+        }
+    }
     private void bindButton() {
         BooleanExpression expression = BooleanExpression.
                 booleanExpression(planetTextField.textProperty().isEmpty())
@@ -159,28 +195,16 @@ public class OverView implements Initializable {
         fillGrid(DefenceType.values(), defenceGrid, "middleNumberField", 999999, 6);
     }
 
-    private void fillGrid(UnitType[] values, GridPane grid, String numberFieldCss, int maxNumber, int maxChars) {
-        for (int i = 0; i < values.length; i++) {
-            UnitType value = values[i];
+    private void bindProperties() {
+        planetList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (oldValue != null) {
+                    unbindOld(oldValue);
+                }
+                bindNew(newValue);
+            }
+        });
 
-            Text text = new Text(value.getName());
-            text.getStyleClass().add("overViewGridText");
-            text.getStyleClass().add("overViewText");
-
-
-            grid.addRow(i);
-            grid.add(text, 0, i);
-
-//            TextField numberField = getNumberTextField(maxChars);
-            Spinner<Integer> numberField = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, maxNumber, 0));
-            numberField.getEditor().setTextFormatter(getTextFormatter(maxChars));
-            numberField.setEditable(true);
-            numberField.getStyleClass().add(numberFieldCss);
-            // TODO: 09.11.2017 checkbox for shields
-            grid.add(numberField, 1, i);
-
-//            fields.put(value, numberField);
-        }
     }
 
     private TextField getNumberTextField(final int maxChars) {
@@ -218,16 +242,15 @@ public class OverView implements Initializable {
         }
     }
 
-    private void bindProperties() {
-        planetList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (oldValue != null) {
-                    unbindOld(oldValue);
-                }
-//                bindNew(newValue);
-            }
-        });
+    private <E extends Buildable> void operateBindUnitTypes(List<UnitType<E>> unitTypes, Function<UnitType<E>, E> function, BiConsumer<StringProperty, IntegerProperty> bindOperation) {
+        for (UnitType<E> unitType : unitTypes) {
+            E unit = function.apply(unitType);
+            Spinner<Integer> field = fields.get(unitType);
 
+            if (field != null) {
+                bindOperation.accept(field.getEditor().textProperty(), unit.counterProperty());
+            }
+        }
     }
 
     private void unbindOld(Planet planet) {
@@ -258,14 +281,38 @@ public class OverView implements Initializable {
         deutValue.textProperty().bind(resource.deutProperty().asString());
     }
 
-    private <E extends Buildable> void operateBindUnitTypes(List<UnitType<E>> unitTypes, Function<UnitType<E>, E> function, BiConsumer<StringProperty, IntegerProperty> bindOperation) {
-        for (UnitType<E> unitType : unitTypes) {
-            E unit = function.apply(unitType);
-            TextField field = fields.get(unitType);
-
-            if (field != null) {
-                bindOperation.accept(field.textProperty(), unit.counterProperty());
+    private enum DetailMode {
+        NORMAL {
+            @Override
+            void change(OverView view) {
+                view.detailsLink.setText("Erweitert");
+                GridPane buildingGrid = view.buildingGrid;
+                texts.forEach(text -> buildingGrid.getChildren().remove(text));
             }
-        }
+        },
+        DETAILS {
+            @Override
+            void change(OverView view) {
+                view.detailsLink.setText("Normal");
+                GridPane buildingGrid = view.buildingGrid;
+
+                for (int i = 0; i < buildingGrid.getRowCount(); i++) {
+                    Text text;
+
+                    if (texts.size() <= i) {
+                        text = new Text("hi");
+                        texts.add(text);
+                    } else {
+                        text = texts.get(i);
+                    }
+                    if (!buildingGrid.getChildren().contains(text)) {
+                        buildingGrid.add(text, 2, i);
+                    }
+                }
+            }
+        };
+        static List<Text> texts = new ArrayList<>();
+
+        abstract void change(OverView view);
     }
 }

@@ -27,6 +27,6 @@ public enum DefenceType implements UnitType<DefenceUnit> {
 
     @Override
     public DefenceUnit create() {
-        return new DefenceUnit();
+        return new DefenceUnit(new RapidFire(), 0, 0, 0);
     }
 }

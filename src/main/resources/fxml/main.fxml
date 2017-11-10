@@ -4,19 +4,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import org.controlsfx.control.StatusBar?>
 <?import java.lang.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" prefHeight="500.0" prefWidth="600.0"
-      stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="gui.main.Main">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" prefHeight="500.0" prefWidth="720.0"
+      stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="gui.Main">
     <children>
         <MenuBar fx:id="menuBar">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
+                        <MenuItem mnemonicParsing="false" text="Einloggen"/>
+                        <MenuItem mnemonicParsing="false" text="Öffnen"/>
+                        <MenuItem mnemonicParsing="false" onAction="#openSettings" text="Einstellungen"/>
+                        <MenuItem mnemonicParsing="false" text="Neuer Spieler"/>
+                        <MenuItem mnemonicParsing="false" text="Neues Universum"/>
+                        <MenuItem mnemonicParsing="false" onAction="#saveData" text="Speichern"/>
                         <MenuItem mnemonicParsing="false" text="Close"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
+                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Data">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Formula"/>
                         <MenuItem mnemonicParsing="false" text="Delete"/>
                     </items>
                 </Menu>
@@ -29,7 +42,7 @@
         </MenuBar>
         <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
             <buttons>
-                <Button mnemonicParsing="false" style="-fx-text-fill: #1879db;" text="Button"/>
+                <Button mnemonicParsing="false" text="Button"/>
             </buttons>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -40,58 +53,62 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
             </VBox.margin>
             <children>
-                <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Universum:">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Universum:">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
                 <Text fx:id="universeName" strokeType="OUTSIDE" strokeWidth="0.0">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
+                <Region HBox.hgrow="ALWAYS"/>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Spieler:">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
                 <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
+                <Region layoutX="119.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
                 <Text layoutX="194.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Punkte:">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
                 <Text fx:id="pointsValue" layoutX="264.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
+                <Region layoutX="571.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
                 <Text layoutX="194.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highscore">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
                 <Text fx:id="highscoreValue" layoutX="265.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
+                <Region layoutX="622.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
                 <Text layoutX="119.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DM:">
                     <styleClass>
-                        <String fx:value="overViewText"/>
-                        <String fx:value="overViewTitles"/>
+                        <String fx:value="text"/>
+                        <String fx:value="titles"/>
                     </styleClass>
                 </Text>
                 <Text fx:id="darkMatterValue" layoutX="189.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -104,8 +121,8 @@
         </HBox>
         <HBox VBox.vgrow="ALWAYS">
             <children>
-                <TreeView fx:id="uniPlayerTree" maxWidth="400.0" minWidth="50.0" showRoot="false"
-                          HBox.hgrow="SOMETIMES"/>
+                <TreeView fx:id="uniPlayerTree" maxWidth="400.0" minWidth="50.0" prefHeight="399.0" prefWidth="208.0"
+                          showRoot="false" HBox.hgrow="SOMETIMES"/>
                 <TabPane tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
                     <tabs>
                         <Tab fx:id="overViewTab" closable="false" styleClass="tabs" text="Untitled Tab"/>
@@ -113,5 +130,6 @@
                 </TabPane>
             </children>
         </HBox>
+        <StatusBar styleClass="status-bar"/>
     </children>
 </VBox>

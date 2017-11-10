@@ -1,11 +1,12 @@
 package units.Building;
 
+import comp.RequestAble;
 import units.UnitType;
 
 /**
  *
  */
-public enum PlanetBuilding implements UnitType<Building> {
+public enum PlanetBuilding implements UnitType<Building>, RequestAble {
     FUSIONPLANT("Fusionskraftwerk") {
     },
     SOLARPLANT("Solarkraftwerk") {

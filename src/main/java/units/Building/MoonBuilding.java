@@ -1,11 +1,12 @@
 package units.Building;
 
+import comp.RequestAble;
 import units.UnitType;
 
 /**
  *
  */
-public enum MoonBuilding implements UnitType<Building> {
+public enum MoonBuilding implements UnitType<Building>, RequestAble {
     CRYSTALSTORAGE("Kristallmine") {
     },
     DEUTSTORAGE("Deuteriumtank") {

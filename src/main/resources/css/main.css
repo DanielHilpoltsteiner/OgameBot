@@ -7,32 +7,14 @@
     textColor: #dbd9d9;
 
 }
-
-.scrollPane{
-    -fx-box-border: transparent;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+.text{
+    -fx-fill: textColor;
 }
-
-.smallNumberField{
-    -fx-pref-width: 60px;
-    -fx-max-width: 60px;
-}
-.middleNumberField{
-    -fx-pref-width: 70px;
-    -fx-max-width: 70px;
+.titles{
+    -fx-font-size: 20px;
 }
 .tree-view{
     -fx-box-border: transparent;
-}
-.overViewText{
-    -fx-fill: textColor;
-}
-.overViewTitles{
-    -fx-font-size: 20px;
-}
-.overViewGridText{
-    -fx-font-size: 13px;
 }
 .tab-pane{
     -fx-box-border: transparent;
@@ -43,4 +25,21 @@
 .label{
     -fx-text-fill: textColor;
 }
+.status-bar{
+  -fx-background-insets: 0,0,0,0;
+  -fx-background-color: linear-gradient(to bottom, derive(base, 50%)1%,derive(base, 30%),derive(base, 10%), base);
+}
+.menu-bar{
+    -fx-background-insets: 0,0,0,0;
+}
+.tab-pane .tab{
+    -fx-border-color: transparent;
+    -fx-background-insets: 0px;
+    -fx-background-radius: 8 8 0 0;
+}
+.tab-pane .tab-header-background{
+    -fx-background-insets: 0px;
+}
+
+
 

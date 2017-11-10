@@ -1,11 +1,15 @@
-package gui.main;
+package gui;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import comp.GameEntity;
 import comp.Player;
-import comp.Research;
 import comp.Universe;
-import gui.DataHolder;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +22,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import tools.JsonAdapter;
+import units.research.Research;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  *
@@ -77,6 +81,42 @@ public class Main extends Application implements Initializable {
         readyTree();
     }
 
+    private GameEntity entityRoot = new GameEntity() {
+        List<GameEntity> children = getEntities();
+
+        @Override
+        public String getText() {
+            return "ROOT";
+        }
+
+        @Override
+        public List<GameEntity> getChildren() {
+            return children;
+        }
+    };
+
+    @FXML
+    void saveData() {
+        Gson gson = new GsonBuilder().
+                setPrettyPrinting().
+                registerTypeAdapter(Set.class, new JsonAdapter<>()).
+                registerTypeAdapter(Map.class, new JsonAdapter<>()).
+                registerTypeAdapter(IntegerProperty.class, new JsonAdapter<>()).
+                registerTypeAdapter(ObjectProperty.class, new JsonAdapter<>()).
+                registerTypeAdapter(StringProperty.class, new JsonAdapter<>()).
+                registerTypeAdapter(DoubleProperty.class, new JsonAdapter<>()).
+                create();
+
+        if (entityRoot != null) {
+            // TODO: 09.11.2017 get new gson for java 9?
+            // TODO: 09.11.2017 error for linked treemap internal??
+            String json = gson.toJson(getEntities());
+            System.out.println(json);
+            gson.fromJson(json, Universe[].class);
+
+        }
+    }
+
     private void loadPlayer(Player newValue) {
         if (newValue != null) {
             playerName.textProperty().bind(newValue.nameProperty());
@@ -95,21 +135,29 @@ public class Main extends Application implements Initializable {
         }
     }
 
+    @FXML
+    void openSettings() {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
+        try {
+            Parent root = loader.load();
+            Stage settingsStage = new Stage();
+            settingsStage.initOwner(this.root.getScene().getWindow());
+
+            settingsStage.setTitle("Einstellungen");
+            settingsStage.setScene(new Scene(root));
+            settingsStage.sizeToScene();
+            settingsStage.show();
+        } catch (IOException e) {
+            // TODO: 09.11.2017 show error window
+            e.printStackTrace();
+        }
+
+    }
+
     private void readyTree() {
-        GameEntity entity = new GameEntity() {
-            @Override
-            public String getText() {
-                return "ROOT";
-            }
 
-            @Override
-            public List<GameEntity> getChildren() {
-                return getEntities();
-            }
-        };
-
-        TreeItem<GameEntity> root = new TreeItem<>(entity);
-        resolveTree(entity, root);
+        TreeItem<GameEntity> root = new TreeItem<>(entityRoot);
+        resolveTree(entityRoot, root);
         uniPlayerTree.setRoot(root);
 
         readyTreeSelection();

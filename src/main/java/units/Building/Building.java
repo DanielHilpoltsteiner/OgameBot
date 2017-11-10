@@ -2,6 +2,7 @@ package units.Building;
 
 import comp.Buildable;
 import comp.Cost;
+import comp.Requirement;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -11,6 +12,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 public abstract class Building implements Buildable {
     private PlanetBuilding type;
     private Cost cost;
+    private Requirement requirement;
     private IntegerProperty level = new SimpleIntegerProperty();
 
     public PlanetBuilding getType() {

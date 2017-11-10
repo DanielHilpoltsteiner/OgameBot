@@ -2,12 +2,12 @@ package tools;
 
 import comp.Cost;
 import comp.CostAble;
-import comp.Research;
 import units.Building.Building;
 import units.Building.PlanetBuilding;
 import units.Building.facilities.accelerator.MachineFactory;
 import units.Building.facilities.accelerator.NanoFactory;
 import units.astroObjects.Planet;
+import units.research.Research;
 import units.warfare.Machine;
 
 import java.time.Duration;

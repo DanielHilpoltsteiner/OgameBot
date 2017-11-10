@@ -26,7 +26,7 @@ import java.util.Map;
 public class Planet implements CelestialBody {
     private int maxT;
     private int fields;
-    private NumberBinding usedFields;
+    private transient NumberBinding usedFields;
 
     private Position position;
     private ObjectProperty<Moon> moon = new SimpleObjectProperty<>();
@@ -34,7 +34,7 @@ public class Planet implements CelestialBody {
     private Resource planetResource;
     private Instant lastResourceUpdate;
 
-    private Player player;
+    private transient Player player;
 
     private Map<PlanetBuilding, Building> buildingMap = new HashMap<>();
     private Map<DefenceType, DefenceUnit> defences = new HashMap<>();

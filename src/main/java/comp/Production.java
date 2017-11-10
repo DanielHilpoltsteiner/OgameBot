@@ -1,21 +1,37 @@
 package comp;
 
-import units.Building.production.mines.CrystalMine;
-import units.Building.production.mines.DeutSynth;
-import units.Building.production.mines.MetalMine;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import tools.Condition;
+import units.Building.Building;
+import units.Building.PlanetBuilding;
+import units.astroObjects.Planet;
 
 /**
  *
  */
 public class Production {
-    private final MetalMine metalMine;
-    private final CrystalMine crystalMine;
-    private final DeutSynth deutSynth;
+    private final Building metalMine;
+    private final Building crystalMine;
+    private final Building deutSynth;
+    private final Planet planet;
 
-    public Production(MetalMine metalMine, CrystalMine crystalMine, DeutSynth deutSynth) {
-        this.metalMine = metalMine;
-        this.crystalMine = crystalMine;
-        this.deutSynth = deutSynth;
+    private IntegerProperty basicMetProd = new SimpleIntegerProperty(90);
+    private IntegerProperty basicCrysProd = new SimpleIntegerProperty(45);
+    private IntegerProperty basicDeutProd = new SimpleIntegerProperty(0);
+
+    private DoubleProperty metProd = new SimpleDoubleProperty(90);
+    private DoubleProperty crysProd = new SimpleDoubleProperty(45);
+    private DoubleProperty deutProd = new SimpleDoubleProperty(0);
+
+    public Production(Planet planet) {
+        Condition.check().nonNull(planet);
+        this.planet = planet;
+        this.metalMine = planet.getBuilding(PlanetBuilding.METALMINE);
+        this.crystalMine = planet.getBuilding(PlanetBuilding.CRYSTALMINE);
+        this.deutSynth = planet.getBuilding(PlanetBuilding.DEUTSYNTH);
     }
 
     public int getMetProd() {

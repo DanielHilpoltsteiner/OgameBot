@@ -34,6 +34,6 @@ public enum ShipType implements UnitType<Ship> {
 
     @Override
     public Ship create() {
-        return new Ship();
+        return new Ship(new RapidFire(), 0, 0, 0, 0, 0, 0);
     }
 }

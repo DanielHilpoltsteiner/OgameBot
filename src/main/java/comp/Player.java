@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tools.Condition;
 import units.astroObjects.Planet;
+import units.research.Research;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Player implements Comparable<Player>, GameEntity {
 
     private Research research;
     private ObservableList<Planet> planets = FXCollections.observableArrayList();
-    private Universe universe;
+    private transient Universe universe;
 
     public Player(String name, int points, int highscore, int darkMatter, Research research, Universe universe) {
         Condition.check().positive(points, highscore, darkMatter).nonNull(research, universe);

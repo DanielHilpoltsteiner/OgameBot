@@ -7,9 +7,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  *
  */
-public class DefenceUnit implements Machine, Buildable {
+public class DefenceUnit extends WarfareUnit implements Machine, Buildable {
     private boolean onlyOne;
     private IntegerProperty numbers = new SimpleIntegerProperty();
+
+    DefenceUnit(RapidFire rapidFire, int structurePoints, int shieldStrength, int attackPower) {
+        super(rapidFire, structurePoints, shieldStrength, attackPower);
+    }
 
     public boolean isOnlyOne() {
         return onlyOne;
