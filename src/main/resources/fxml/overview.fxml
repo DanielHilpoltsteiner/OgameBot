@@ -1,151 +1,208 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            xmlns="http://javafx.com/javafx/9.0.1" fx:controller="gui.OverView">
-    <left>
-        <VBox BorderPane.alignment="CENTER">
-            <children>
-                <ListView fx:id="planetList" focusTraversable="false" prefHeight="200.0" prefWidth="150.0"
-                          VBox.vgrow="ALWAYS"/>
-                <HBox prefWidth="200.0" spacing="10.0">
-                    <children>
-                        <TextField fx:id="planetTextField" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addPlanetBtn" mnemonicParsing="false" onAction="#addPlanet" prefHeight="25.0"
-                                text="+ Planet" HBox.hgrow="SOMETIMES"/>
-                    </children>
-                    <VBox.margin>
-                        <Insets bottom="5.0" top="5.0"/>
-                    </VBox.margin>
-                </HBox>
-            </children>
-            <BorderPane.margin>
-                <Insets/>
-            </BorderPane.margin>
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </padding>
-        </VBox>
-    </left>
-    <center>
-        <VBox BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-                <Insets/>
-            </BorderPane.margin>
-            <children>
-                <HBox fx:id="planetValuesContainer" alignment="CENTER_LEFT" spacing="5.0">
-                    <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metall:" HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets/>
-                            </HBox.margin>
-                            <styleClass>
-                                <String fx:value="overViewText"/>
-                                <String fx:value="overViewGridText"/>
-                            </styleClass>
-                        </Text>
-                        <Text fx:id="metalValue" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="overViewText"/>
-                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kristall:">
-                            <HBox.margin>
-                                <Insets/>
-                            </HBox.margin>
-                            <styleClass>
-                                <String fx:value="overViewText"/>
-                                <String fx:value="overViewGridText"/>
-                            </styleClass>
-                        </Text>
-                        <Text fx:id="crystalValue" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="overViewText"/>
-                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deuterium:">
-                            <HBox.margin>
-                                <Insets/>
-                            </HBox.margin>
-                            <styleClass>
-                                <String fx:value="overViewText"/>
-                                <String fx:value="overViewGridText"/>
-                            </styleClass>
-                        </Text>
-                        <Text fx:id="deutValue" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="overViewText"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Hyperlink fx:id="detailsLink" alignment="CENTER_RIGHT" onAction="#showDetails" text="Erweitert"
-                                   HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets/>
-                            </HBox.margin>
-                        </Hyperlink>
-                    </children>
-                    <padding>
-                        <Insets left="5.0"/>
-                    </padding>
-                </HBox>
-                <ScrollPane id="overViewScrollPane" fitToWidth="true" styleClass="scrollPane">
+<TabPane xmlns:fx="http://javafx.com/fxml/1" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/9.0.1"
+         fx:controller="ogamebot.gui.OverView">
+    <tabs>
+        <Tab text="Spieler">
+            <content>
+                <ScrollPane fitToHeight="true" fitToWidth="true">
                     <content>
-                        <VBox alignment="CENTER" spacing="10.0">
+                        <VBox>
                             <children>
-                                <TitledPane animated="false" text="Gebäude">
-                                    <content>
-                                        <GridPane fx:id="buildingGrid" styleClass="overViewGrid">
-                                            <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"
-                                                                   minWidth="10.0" prefWidth="140.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"
-                                                                   minWidth="10.0" prefWidth="70.0"/>
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-                                            </rowConstraints>
-                                        </GridPane>
-                                    </content>
+                                <HBox prefWidth="200.0" spacing="5.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text"
+                                              text="Highscore"/>
+                                        <Text fx:id="scoreValue" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE"
+                                              strokeWidth="0.0" styleClass="text"/>
+                                        <Region maxWidth="100.0" HBox.hgrow="ALWAYS"/>
+                                        <Text layoutX="33.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              styleClass="text" text="Dunkle Materie"/>
+                                        <Text fx:id="darkMatterValue" layoutX="56.0" layoutY="23.0" strokeType="OUTSIDE"
+                                              strokeWidth="0.0" styleClass="text"/>
+                                    </children>
                                     <VBox.margin>
-                                        <Insets/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                                     </VBox.margin>
-                                </TitledPane>
-                                <TitledPane animated="false" text="Schiffe">
+                                </HBox>
+                                <TitledPane animated="false" text="Forschung">
                                     <content>
-                                        <GridPane fx:id="shipGrid" styleClass="overViewGrid">
+                                        <GridPane fx:id="researchGrid" hgap="5.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"
-                                                                   minWidth="10.0" prefWidth="140.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"
-                                                                   minWidth="10.0" prefWidth="70.0"/>
+                                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="200.0"
+                                                                   minWidth="10.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0"/>
                                             </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-                                            </rowConstraints>
-                                        </GridPane>
-                                    </content>
-                                </TitledPane>
-                                <TitledPane animated="false" text="Verteidigungsanlagen">
-                                    <content>
-                                        <GridPane fx:id="defenceGrid" styleClass="overViewGrid">
-                                            <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"
-                                                                   minWidth="10.0" prefWidth="140.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"
-                                                                   minWidth="10.0" prefWidth="70.0"/>
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-                                            </rowConstraints>
                                         </GridPane>
                                     </content>
                                 </TitledPane>
                             </children>
-                            <padding>
-                                <Insets top="5.0"/>
-                            </padding>
                         </VBox>
                     </content>
-                    <padding>
-                        <Insets top="5.0"/>
-                    </padding>
                 </ScrollPane>
-            </children>
-        </VBox>
-    </center>
-</BorderPane>
+            </content>
+        </Tab>
+        <Tab text="Planeten">
+            <content>
+                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <left>
+                        <VBox BorderPane.alignment="CENTER">
+                            <children>
+                                <ListView fx:id="planetList" focusTraversable="false" prefHeight="200.0"
+                                          prefWidth="150.0" VBox.vgrow="ALWAYS"/>
+                                <HBox prefWidth="200.0" spacing="10.0">
+                                    <children>
+                                        <TextField fx:id="planetTextField" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="addPlanetBtn" mnemonicParsing="false" onAction="#addPlanet"
+                                                prefHeight="25.0" text="+ Planet" HBox.hgrow="SOMETIMES"/>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" top="5.0"/>
+                                    </VBox.margin>
+                                </HBox>
+                            </children>
+                            <BorderPane.margin>
+                                <Insets/>
+                            </BorderPane.margin>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                            </padding>
+                        </VBox>
+                    </left>
+                    <center>
+                        <VBox fx:id="planetContent" BorderPane.alignment="CENTER">
+                            <BorderPane.margin>
+                                <Insets/>
+                            </BorderPane.margin>
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                    <children>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metall:" HBox.hgrow="ALWAYS">
+                                            <HBox.margin>
+                                                <Insets/>
+                                            </HBox.margin>
+                                            <styleClass>
+                                                <String fx:value="overViewText"/>
+                                                <String fx:value="overViewGridText"/>
+                                            </styleClass>
+                                        </Text>
+                                        <Text fx:id="metalValue" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              styleClass="overViewText"/>
+                                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kristall:">
+                                            <HBox.margin>
+                                                <Insets/>
+                                            </HBox.margin>
+                                            <styleClass>
+                                                <String fx:value="overViewText"/>
+                                                <String fx:value="overViewGridText"/>
+                                            </styleClass>
+                                        </Text>
+                                        <Text fx:id="crystalValue" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              styleClass="overViewText"/>
+                                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
+                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deuterium:">
+                                            <HBox.margin>
+                                                <Insets/>
+                                            </HBox.margin>
+                                            <styleClass>
+                                                <String fx:value="overViewText"/>
+                                                <String fx:value="overViewGridText"/>
+                                            </styleClass>
+                                        </Text>
+                                        <Text fx:id="deutValue" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              styleClass="overViewText"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Hyperlink fx:id="detailsLink" alignment="CENTER_RIGHT" onAction="#showDetails"
+                                                   text="Erweitert" HBox.hgrow="ALWAYS">
+                                            <HBox.margin>
+                                                <Insets/>
+                                            </HBox.margin>
+                                        </Hyperlink>
+                                    </children>
+                                    <padding>
+                                        <Insets left="5.0"/>
+                                    </padding>
+                                </HBox>
+                                <ScrollPane id="overViewScrollPane" fitToWidth="true" styleClass="scrollPane">
+                                    <content>
+                                        <VBox alignment="CENTER" spacing="10.0">
+                                            <children>
+                                                <TitledPane animated="false" text="Gebäude">
+                                                    <content>
+                                                        <GridPane fx:id="buildingGrid" styleClass="overViewGrid">
+                                                            <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES"
+                                                                                   maxWidth="-Infinity" minWidth="10.0"
+                                                                                   prefWidth="140.0"/>
+                                                                <ColumnConstraints hgrow="SOMETIMES"
+                                                                                   maxWidth="-Infinity" minWidth="10.0"
+                                                                                   prefWidth="70.0"/>
+                                                            </columnConstraints>
+                                                            <rowConstraints>
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                                                            </rowConstraints>
+                                                        </GridPane>
+                                                    </content>
+                                                    <VBox.margin>
+                                                        <Insets/>
+                                                    </VBox.margin>
+                                                </TitledPane>
+                                                <TitledPane animated="false" text="Schiffe">
+                                                    <content>
+                                                        <GridPane fx:id="shipGrid" styleClass="overViewGrid">
+                                                            <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES"
+                                                                                   maxWidth="-Infinity" minWidth="10.0"
+                                                                                   prefWidth="140.0"/>
+                                                                <ColumnConstraints hgrow="SOMETIMES"
+                                                                                   maxWidth="-Infinity" minWidth="10.0"
+                                                                                   prefWidth="70.0"/>
+                                                            </columnConstraints>
+                                                            <rowConstraints>
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                                                            </rowConstraints>
+                                                        </GridPane>
+                                                    </content>
+                                                </TitledPane>
+                                                <TitledPane animated="false" text="Verteidigungsanlagen">
+                                                    <content>
+                                                        <GridPane fx:id="defenceGrid" styleClass="overViewGrid">
+                                                            <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES"
+                                                                                   maxWidth="-Infinity" minWidth="10.0"
+                                                                                   prefWidth="140.0"/>
+                                                                <ColumnConstraints hgrow="SOMETIMES"
+                                                                                   maxWidth="-Infinity" minWidth="10.0"
+                                                                                   prefWidth="70.0"/>
+                                                            </columnConstraints>
+                                                            <rowConstraints>
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                                                            </rowConstraints>
+                                                        </GridPane>
+                                                    </content>
+                                                </TitledPane>
+                                            </children>
+                                            <padding>
+                                                <Insets top="5.0"/>
+                                            </padding>
+                                        </VBox>
+                                    </content>
+                                    <padding>
+                                        <Insets top="5.0"/>
+                                    </padding>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </center>
+                </BorderPane>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>

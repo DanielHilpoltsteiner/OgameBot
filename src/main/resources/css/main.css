@@ -19,12 +19,6 @@
 .tab-pane{
     -fx-box-border: transparent;
 }
-.tab-label{
-    -fx-text-fill: textColor;
-}
-.label{
-    -fx-text-fill: textColor;
-}
 .status-bar{
   -fx-background-insets: 0,0,0,0;
   -fx-background-color: linear-gradient(to bottom, derive(base, 50%)1%,derive(base, 30%),derive(base, 10%), base);
@@ -40,6 +34,10 @@
 .tab-pane .tab-header-background{
     -fx-background-insets: 0px;
 }
+.cell:filled .text{
+    -fx-fill: black;
+}
+
 
 
 

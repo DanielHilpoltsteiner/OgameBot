@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<?import gui.propertySheet.PropertySheet?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
 <HBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/9.0.1"
-      fx:controller="gui.Settings">
+      fx:controller="ogamebot.gui.Settings">
     <ListView prefHeight="200.0" prefWidth="200.0"/>
-    <PropertySheet/>
 </HBox>
