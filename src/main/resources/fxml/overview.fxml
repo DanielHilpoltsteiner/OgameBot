@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -34,11 +33,6 @@
                                 <TitledPane animated="false" text="Forschung">
                                     <content>
                                         <GridPane fx:id="researchGrid" hgap="5.0">
-                                            <columnConstraints>
-                                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="200.0"
-                                                                   minWidth="10.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0"/>
-                                            </columnConstraints>
                                         </GridPane>
                                     </content>
                                 </TitledPane>
@@ -132,67 +126,31 @@
                                 </HBox>
                                 <ScrollPane id="overViewScrollPane" fitToWidth="true" styleClass="scrollPane">
                                     <content>
-                                        <VBox alignment="CENTER" spacing="10.0">
+                                        <FlowPane hgap="10.0" prefWrapLength="500.0" rowValignment="TOP" vgap="5.0">
                                             <children>
                                                 <TitledPane animated="false" text="Gebäude">
                                                     <content>
                                                         <GridPane fx:id="buildingGrid" styleClass="overViewGrid">
-                                                            <columnConstraints>
-                                                                <ColumnConstraints hgrow="SOMETIMES"
-                                                                                   maxWidth="-Infinity" minWidth="10.0"
-                                                                                   prefWidth="140.0"/>
-                                                                <ColumnConstraints hgrow="SOMETIMES"
-                                                                                   maxWidth="-Infinity" minWidth="10.0"
-                                                                                   prefWidth="70.0"/>
-                                                            </columnConstraints>
-                                                            <rowConstraints>
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-                                                            </rowConstraints>
                                                         </GridPane>
                                                     </content>
-                                                    <VBox.margin>
+                                                    <FlowPane.margin>
                                                         <Insets/>
-                                                    </VBox.margin>
+                                                    </FlowPane.margin>
                                                 </TitledPane>
                                                 <TitledPane animated="false" text="Schiffe">
                                                     <content>
                                                         <GridPane fx:id="shipGrid" styleClass="overViewGrid">
-                                                            <columnConstraints>
-                                                                <ColumnConstraints hgrow="SOMETIMES"
-                                                                                   maxWidth="-Infinity" minWidth="10.0"
-                                                                                   prefWidth="140.0"/>
-                                                                <ColumnConstraints hgrow="SOMETIMES"
-                                                                                   maxWidth="-Infinity" minWidth="10.0"
-                                                                                   prefWidth="70.0"/>
-                                                            </columnConstraints>
-                                                            <rowConstraints>
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-                                                            </rowConstraints>
                                                         </GridPane>
                                                     </content>
                                                 </TitledPane>
                                                 <TitledPane animated="false" text="Verteidigungsanlagen">
                                                     <content>
                                                         <GridPane fx:id="defenceGrid" styleClass="overViewGrid">
-                                                            <columnConstraints>
-                                                                <ColumnConstraints hgrow="SOMETIMES"
-                                                                                   maxWidth="-Infinity" minWidth="10.0"
-                                                                                   prefWidth="140.0"/>
-                                                                <ColumnConstraints hgrow="SOMETIMES"
-                                                                                   maxWidth="-Infinity" minWidth="10.0"
-                                                                                   prefWidth="70.0"/>
-                                                            </columnConstraints>
-                                                            <rowConstraints>
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
-                                                            </rowConstraints>
                                                         </GridPane>
                                                     </content>
                                                 </TitledPane>
                                             </children>
-                                            <padding>
-                                                <Insets top="5.0"/>
-                                            </padding>
-                                        </VBox>
+                                        </FlowPane>
                                     </content>
                                     <padding>
                                         <Insets top="5.0"/>

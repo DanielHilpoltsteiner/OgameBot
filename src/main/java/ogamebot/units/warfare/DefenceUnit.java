@@ -47,4 +47,27 @@ public class DefenceUnit extends WarfareUnit {
     public int compareTo(UpgradeAble o) {
         return 0;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefenceUnit that = (DefenceUnit) o;
+
+        return getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "DefenceUnit{" +
+                "name=" + name +
+                ", numbers=" + numbers +
+                '}';
+    }
 }

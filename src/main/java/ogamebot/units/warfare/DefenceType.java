@@ -153,4 +153,11 @@ public enum DefenceType implements DefenseMachinery {
     public DefenceUnit create() {
         return new DefenceUnit(getRapidFire(), structure, shield, attack, this);
     }
+
+    @Override
+    public String toString() {
+        return "DefenceType{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

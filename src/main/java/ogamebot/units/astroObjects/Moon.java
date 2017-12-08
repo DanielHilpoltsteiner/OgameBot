@@ -2,10 +2,13 @@ package ogamebot.units.astroObjects;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import ogamebot.comp.Player;
 import ogamebot.units.UnitType;
 import ogamebot.units.building.Building;
 import ogamebot.units.building.MoonBuilding;
+import ogamebot.units.units.Resource;
 import ogamebot.units.warfare.DefenceUnit;
 import ogamebot.units.warfare.Ship;
 
@@ -24,14 +27,14 @@ public class Moon implements CelestialBody {
 
     private Planet planet;
     private Map<MoonBuilding, Building> buildingMap = new HashMap<>();
-
-    @Override
-    public String getName() {
-        return name;
-    }
+    private ObjectProperty<Resource> resource;
 
     private Map<UnitType<Ship>, Ship> ships = new HashMap<>();
     private Map<UnitType<DefenceUnit>, DefenceUnit> defences = new HashMap<>();
+
+    public Moon() {
+        resource = new SimpleObjectProperty<>(new Resource());
+    }
 
     @Override
     public Building getBuilding(UnitType<Building> type) {
@@ -53,6 +56,11 @@ public class Moon implements CelestialBody {
         }
 
         return building;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public int getMaxT() {
@@ -98,6 +106,11 @@ public class Moon implements CelestialBody {
         }
 
         return defenceUnit;
+    }
+
+    @Override
+    public ObjectProperty<Resource> resourceProperty() {
+        return resource;
     }
 
     void setPlanet(Planet planet) {

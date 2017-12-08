@@ -14,7 +14,6 @@ import ogamebot.units.units.Resource;
 import ogamebot.units.warfare.DefenceUnit;
 import ogamebot.units.warfare.Ship;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +28,7 @@ public class Planet implements CelestialBody {
     private Position position;
     private ObjectProperty<Moon> moon = new SimpleObjectProperty<>();
     private Resource debrisField;
-    private Resource planetResource;
-    private Instant lastResourceUpdate;
+    private ObjectProperty<Resource> planetResource = new SimpleObjectProperty<>();
 
     private transient Player player;
 
@@ -47,7 +45,7 @@ public class Planet implements CelestialBody {
         this.debrisField = debrisField;
         this.player = player;
         this.name.set(name);
-        this.planetResource = new Resource();
+        this.planetResource.set(new Resource());
     }
 
 
@@ -85,6 +83,11 @@ public class Planet implements CelestialBody {
     }
 
     public Resource getPlanetResource() {
+        return planetResource.get();
+    }
+
+    @Override
+    public ObjectProperty<Resource> resourceProperty() {
         return planetResource;
     }
 
@@ -157,5 +160,36 @@ public class Planet implements CelestialBody {
 
     public double getDeutBooster() {
         return 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Planet planet = (Planet) o;
+
+        if (getMaxT() != planet.getMaxT()) return false;
+        if (!getPlayer().equals(planet.getPlayer())) return false;
+        return getName().equals(planet.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getMaxT();
+        result = 31 * result + getPlayer().hashCode();
+        result = 31 * result + getName().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Planet{" +
+                "maxT=" + maxT +
+                ", fields=" + fields +
+                ", planetResource=" + planetResource +
+                ", player=" + player +
+                ", name=" + name +
+                '}';
     }
 }

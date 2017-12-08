@@ -64,7 +64,7 @@ public enum PlanetBuilding implements BuildingType {
             researchBoost /= 100;
 
             product *= researchBoost;
-            final double universeSpeed = player.getUniverse().getBuildSpeed();
+            final double universeSpeed = player.getUniverse().getEconomySpeed();
             return product * universeSpeed;
         }
     },
@@ -184,5 +184,12 @@ public enum PlanetBuilding implements BuildingType {
     @Override
     public Building create() {
         return new Building(this);
+    }
+
+    @Override
+    public String toString() {
+        return "PlanetBuilding{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

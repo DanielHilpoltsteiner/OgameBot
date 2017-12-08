@@ -76,7 +76,7 @@ public abstract class Calculator {
         researchBoost /= 100;
 
         product *= researchBoost;
-        final double universeSpeed = player.getUniverse().getBuildSpeed();
+        final double universeSpeed = player.getUniverse().getEconomySpeed();
         return product * universeSpeed;
     }
 }

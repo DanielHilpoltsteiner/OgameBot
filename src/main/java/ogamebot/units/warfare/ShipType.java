@@ -428,4 +428,11 @@ public enum ShipType implements ShipTypes {
     public Ship create() {
         return new Ship(getRapidFire(), structurePoints, shield, attack, speed, capacity, consumption, this);
     }
+
+    @Override
+    public String toString() {
+        return "ShipType{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import ogamebot.units.astroObjects.Planet;
 import ogamebot.units.research.Research;
@@ -27,21 +28,27 @@ public class Player implements Comparable<Player>, GameEntity {
 
     private Map<ResearchFields, Research> research = new HashMap<>();
     private ObservableList<Planet> planets = FXCollections.observableArrayList();
+    private List<Production> productions = new ArrayList<>();
     private transient Universe universe;
 
     public Player(String name, Universe universe) {
         Condition.check().nonNull(universe, name).notEmpty(name);
         this.universe = universe;
         this.name.setValue(name);
+
+        planets.addListener((ListChangeListener<? super Planet>) observable -> {
+            if (observable.next()) {
+                observable.getAddedSubList().forEach(planet -> productions.add(new Production(planet)));
+            }
+        });
     }
 
     public Player(String name, int points, int highscore, int darkMatter, Universe universe) {
-        Condition.check().positive(points, highscore, darkMatter).nonNull(research, universe);
-        this.name.set(name);
+        this(name, universe);
+        Condition.check().positive(points, highscore, darkMatter).nonNull(research);
         this.points.set(points);
         this.highscore.set(highscore);
         this.darkMatter.set(darkMatter);
-        this.universe = universe;
     }
 
     @Override
@@ -84,17 +91,23 @@ public class Player implements Comparable<Player>, GameEntity {
 
         Player player = (Player) o;
 
-        return getName().equals(player.getName());
+        if (!getName().equals(player.getName())) return false;
+        return getUniverse().equals(player.getUniverse());
     }
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        int result = getName().hashCode();
+        result = 31 * result + getUniverse().hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return name.get();
+        return "Player{" +
+                "name=" + name +
+                ", universe=" + universe +
+                '}';
     }
 
     @Override

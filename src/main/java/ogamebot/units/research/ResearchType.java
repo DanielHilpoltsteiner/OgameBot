@@ -1,10 +1,11 @@
 package ogamebot.units.research;
 
 import ogamebot.comp.RequireAble;
-import ogamebot.units.UnitType;
+import ogamebot.units.Effector;
 
 /**
  *
  */
-public interface ResearchType extends UnitType<Research>, RequireAble {
+public interface ResearchType extends RequireAble<Research>, Effector {
+
 }

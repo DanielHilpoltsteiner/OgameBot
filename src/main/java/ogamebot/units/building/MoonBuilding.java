@@ -86,4 +86,11 @@ public enum MoonBuilding implements BuildingType {
     public Building create() {
         return new Building(this);
     }
+
+    @Override
+    public String toString() {
+        return "MoonBuilding{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

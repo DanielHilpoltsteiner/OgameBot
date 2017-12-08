@@ -2,6 +2,7 @@ package ogamebot.gui;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -48,7 +49,7 @@ public class Build implements Initializable {
             tabPane.getTabs().add(tab);
 
             Expand expand = loader.getController();
-            expand.load(values, planetList.getSelectionModel().selectedItemProperty(), upgradeAbleBiFunction);
+            expand.load(values, upgradeAbleBiFunction);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,6 +72,8 @@ public class Build implements Initializable {
             return null;
         });
 
+        Expand.ready(planetList.getSelectionModel().selectedItemProperty());
+
         planetList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Planet item, boolean empty) {
@@ -84,6 +87,12 @@ public class Build implements Initializable {
                 }
             }
         });
+
+        planetList.getItems().addListener((ListChangeListener<? super Planet>) observable -> {
+            if (observable.next() && observable.wasAdded() && planetList.getSelectionModel().isEmpty()) {
+                planetList.getSelectionModel().selectFirst();
+            }
+        });
     }
 
     private void loadData() {
@@ -95,10 +104,6 @@ public class Build implements Initializable {
     private void loadPlayer(Player player) {
         if (player != null) {
             planetList.setItems(player.getPlanets());
-
-            if (!planetList.getItems().isEmpty()) {
-                planetList.getSelectionModel().selectFirst();
-            }
         }
     }
 

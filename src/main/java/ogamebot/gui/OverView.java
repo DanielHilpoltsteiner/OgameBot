@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.converter.NumberStringConverter;
 import ogamebot.comp.Player;
-import ogamebot.comp.Requirement;
 import ogamebot.comp.UpgradeAble;
 import ogamebot.tools.CustomBindings;
 import ogamebot.units.UnitType;
@@ -260,7 +259,7 @@ public class OverView implements Initializable {
         }
     }
 
-    private <E extends UpgradeAble> void operateBindUnitTypes(Planet planet, List<UnitType<E>> unitTypes, Function<UnitType<E>, E> function, BiConsumer<StringProperty, IntegerProperty> bindOperation) {
+    private <E extends UpgradeAble> void operateBindUnitTypes(List<UnitType<E>> unitTypes, Function<UnitType<E>, E> function, BiConsumer<StringProperty, IntegerProperty> bindOperation) {
         for (UnitType<E> unitType : unitTypes) {
             E unit = function.apply(unitType);
             Spinner<Integer> field = fields.get(unitType);
@@ -271,13 +270,6 @@ public class OverView implements Initializable {
                     CustomBindings.bindBidirectional(unit.counterProperty(), checkBox.selectedProperty());
                 }
             } else if (field != null) {
-                final Requirement requirement = unit.getType().getRequirement();
-                unit.counterProperty().addListener((observable) -> {
-                    if (!requirement.check(planet)) {
-                        field.setDisable(true);
-                    }
-                });
-                field.disableProperty().bind(Bindings.createBooleanBinding(() -> !requirement.check(planet)));
                 bindOperation.accept(field.getEditor().textProperty(), unit.counterProperty());
             }
         }
@@ -297,15 +289,15 @@ public class OverView implements Initializable {
         List<UnitType<Ship>> shipUnits = new ArrayList<>(Arrays.asList(ShipType.values()));
         List<UnitType<DefenceUnit>> defenceUnits = new ArrayList<>(Arrays.asList(DefenceType.values()));
 
-        operateBindUnitTypes(planet, buildings, planet::getBuilding, bindOperation);
-        operateBindUnitTypes(planet, shipUnits, planet::getShip, bindOperation);
-        operateBindUnitTypes(planet, defenceUnits, planet::getDefence, bindOperation);
+        operateBindUnitTypes(buildings, planet::getBuilding, bindOperation);
+        operateBindUnitTypes(shipUnits, planet::getShip, bindOperation);
+        operateBindUnitTypes(defenceUnits, planet::getDefence, bindOperation);
 
-        Resource resource = planet.getPlanetResource();
+        ObjectProperty<Resource> resource = planet.resourceProperty();
 
-        metalValue.textProperty().bind(resource.metalProperty().asString());
-        crystalValue.textProperty().bind(resource.crystalProperty().asString());
-        deutValue.textProperty().bind(resource.deutProperty().asString());
+        metalValue.textProperty().bind(Bindings.createStringBinding(() -> resource.get().getMetal().toString(), resource));
+        crystalValue.textProperty().bind(Bindings.createStringBinding(() -> resource.get().getCrystal().toString(), resource));
+        deutValue.textProperty().bind(Bindings.createStringBinding(() -> resource.get().getDeut().toString(), resource));
     }
 
     private enum DetailMode {

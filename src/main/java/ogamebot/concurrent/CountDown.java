@@ -3,6 +3,7 @@ package ogamebot.concurrent;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -17,16 +18,20 @@ public class CountDown {
     private static CountDown countDown = new CountDown();
     private final Timeline timeline;
 
-    private List<ObjectProperty<ZonedDateTime>> instants = new ArrayList<>();
+    private List<ObjectProperty<ZonedDateTime>> zonedDateTimes = new ArrayList<>();
     private List<DurationLimit> countDownList = new ArrayList<>();
     private List<DurationLimit> countUpList = new ArrayList<>();
 
     private boolean init = false;
+    private ObjectProperty<ZonedDateTime> currentTime;
 
     private CountDown() {
         if (countDown != null) {
             throw new IllegalStateException();
         }
+        currentTime = new SimpleObjectProperty<>(ZonedDateTime.now());
+        zonedDateTimes.add(currentTime);
+
         timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> refresh()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -43,6 +48,10 @@ public class CountDown {
         return countDown;
     }
 
+    public ObjectProperty<ZonedDateTime> getTimeProperty() {
+        return currentTime;
+    }
+
     public void addCountDown(ObjectProperty<Duration> duration, Duration limit) {
         countDownList.add(new DurationLimit(duration, limit));
     }
@@ -52,15 +61,15 @@ public class CountDown {
     }
 
     public void refreshInstant(ObjectProperty<ZonedDateTime> instantProperty) {
-        instants.add(instantProperty);
+        zonedDateTimes.add(instantProperty);
     }
 
     public void remove(ObjectProperty<ZonedDateTime> instantProperty) {
-        instants.remove(instantProperty);
+        zonedDateTimes.remove(instantProperty);
     }
 
     private void refresh() {
-        instants.forEach(property -> property.set(property.get().plusSeconds(1)));
+        zonedDateTimes.forEach(property -> property.set(property.get().plusSeconds(1)));
         refreshDuration((Duration::minusSeconds), countDownList);
         refreshDuration((Duration::plusSeconds), countUpList);
     }

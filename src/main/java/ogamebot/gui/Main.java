@@ -61,7 +61,8 @@ public class Main extends Application implements Initializable {
         Parent root = loader.load();
 
         primaryStage.setTitle("OgameBot");
-        primaryStage.setScene(new Scene(root));
+        final Scene value = new Scene(root);
+        primaryStage.setScene(value);
         primaryStage.sizeToScene();
         primaryStage.show();
     }
@@ -103,9 +104,6 @@ public class Main extends Application implements Initializable {
         if (entityRoot != null) {
             // TODO: 09.11.2017 get new gson for java 9?
             // TODO: 09.11.2017 error for linked treemap internal??
-            String json = gson.toJson(getEntities());
-            System.out.println(json);
-            gson.fromJson(json, Universe[].class);
 
         }
     }
@@ -199,6 +197,7 @@ public class Main extends Application implements Initializable {
         value.addPlayer(f);
         value.addPlayer(player1);
         player1.getPlanets().add(new PlanetBuilder("franz").setPlayer(player1).createPlanet());
+        player1.getPlanets().add(new PlanetBuilder("hans").setPlayer(player1).createPlanet());
 
         List<GameEntity> entities = new ArrayList<>();
         entities.add(value);

@@ -94,7 +94,7 @@ public class DurationCalc {
         BigDecimal roboRed = BigDecimal.valueOf(machLvl + 1);
         BigDecimal naniRed = BigDecimal.valueOf(2).pow(naniLevel);
 
-        double speed = body.getPlayer().getUniverse().getBuildSpeed();
+        double speed = body.getPlayer().getUniverse().getEconomySpeed();
 
 
         final BigDecimal firstDivide = value.divide(roboRed, precision, RoundingMode.CEILING);

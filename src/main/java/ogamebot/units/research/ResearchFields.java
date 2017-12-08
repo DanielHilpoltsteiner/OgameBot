@@ -182,4 +182,11 @@ public enum ResearchFields implements ResearchType {
     public Research create() {
         return new Research(this);
     }
+
+    @Override
+    public String toString() {
+        return "ResearchFields{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

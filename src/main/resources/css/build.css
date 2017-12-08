@@ -1,3 +1,13 @@
 .button{
     -fx-opacity: 0.7;
 }
+.grid-row-disabled{
+    -fx-background-color: #6C8C95;
+}
+.disable-cross{
+}
+.normal-cross{
+}
+.cross{
+    -fx-fill: white;
+}

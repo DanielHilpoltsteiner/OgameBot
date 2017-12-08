@@ -61,4 +61,27 @@ public class Building implements UpgradeAble {
     public DoubleProperty outputProperty() {
         return output;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Building building = (Building) o;
+
+        return getName().equals(building.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Building{" +
+                "name=" + name +
+                ", level=" + level +
+                '}';
+    }
 }

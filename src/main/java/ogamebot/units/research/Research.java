@@ -56,4 +56,27 @@ public class Research implements UpgradeAble {
     public int compareTo(UpgradeAble o) {
         return 0;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Research research = (Research) o;
+
+        return getName().equals(research.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Research{" +
+                "name=" + name +
+                ", level=" + level +
+                '}';
+    }
 }
