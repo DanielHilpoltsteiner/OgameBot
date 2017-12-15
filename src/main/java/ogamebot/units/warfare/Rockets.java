@@ -1,12 +1,12 @@
 package ogamebot.units.warfare;
 
+import ogamebot.calc.Calculator;
 import ogamebot.comp.Cost;
 import ogamebot.comp.Requirement;
-import ogamebot.tools.Calculator;
 
-import static ogamebot.units.building.PlanetBuilding.ROCKETSILO;
-import static ogamebot.units.building.PlanetBuilding.SPACESHIPSHIPYARD;
-import static ogamebot.units.research.ResearchFields.IMPULSE_ENGINGE;
+import static ogamebot.units.building.BuildingType.ROCKETSILO;
+import static ogamebot.units.building.BuildingType.SPACESHIPSHIPYARD;
+import static ogamebot.units.research.ResearchField.IMPULSE_ENGINGE;
 
 /**
  *
@@ -53,7 +53,9 @@ public enum Rockets implements Machine {
         return Calculator.simpleMassCost(metCost, crystalCost, deutCost, number);
     }
 
+
     public WarfareUnit create() {
         return new Rocket(structure, shield, attack, this);
     }
+
 }

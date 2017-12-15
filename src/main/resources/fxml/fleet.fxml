@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.SegmentedButton?>
+<TabPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/fleet.css" tabClosingPolicy="UNAVAILABLE"
+         xmlns="http://javafx.com/javafx/9.0.1" fx:controller="ogamebot.gui.fleet.FleetControl">
+    <tabs>
+        <Tab text="Flotte verschicken">
+            <content>
+                <ScrollPane fx:id="fleetControlContainer" fitToHeight="true" fitToWidth="true">
+                    <content>
+                        <VBox spacing="5.0">
+                            <children>
+                                <GridPane alignment="CENTER" hgap="5.0" vgap="5.0" VBox.vgrow="NEVER">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="200.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="180.0"/>
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity"
+                                                           minWidth="-Infinity" prefWidth="150.0"/>
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity"
+                                                           minWidth="10.0" prefWidth="150.0"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0"
+                                                        valignment="CENTER" vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0"
+                                                        valignment="CENTER" vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0"
+                                                        valignment="CENTER" vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0"
+                                                        valignment="CENTER" vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0"
+                                                        vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0"
+                                                        vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0"
+                                                        vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0"
+                                                        vgrow="NEVER"/>
+                                    </rowConstraints>
+                                    <children>
+                                        <HBox GridPane.columnIndex="2" GridPane.columnSpan="2147483647"
+                                              GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                                            <children>
+                                                <VBox alignment="CENTER" spacing="5.0">
+                                                    <children>
+                                                        <HBox spacing="5.0">
+                                                            <children>
+                                                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                                                      text="Ziel"/>
+                                                                <Text fx:id="targetName" layoutX="10.0" layoutY="23.0"
+                                                                      strokeType="OUTSIDE" strokeWidth="0.0"/>
+                                                            </children>
+                                                        </HBox>
+                                                        <SegmentedButton>
+                                                            <buttons>
+                                                                <ToggleButton id="planet-target" fx:id="planetTarget"
+                                                                              mnemonicParsing="false" selected="true"/>
+                                                                <ToggleButton id="moon-target" fx:id="moonTarget"
+                                                                              mnemonicParsing="false"/>
+                                                                <ToggleButton id="debris-target" fx:id="debrisTarget"
+                                                                              mnemonicParsing="false"/>
+                                                            </buttons>
+                                                        </SegmentedButton>
+                                                        <HBox alignment="CENTER" spacing="5.0">
+                                                            <children>
+                                                                <TextField fx:id="galaxy" maxWidth="-Infinity"
+                                                                           minWidth="-Infinity" prefWidth="50.0"
+                                                                           promptText="Galaxie"/>
+                                                                <TextField fx:id="system" layoutX="10.0" layoutY="10.0"
+                                                                           maxWidth="-Infinity" minWidth="-Infinity"
+                                                                           prefWidth="60.0" promptText="System"/>
+                                                                <TextField fx:id="position" layoutX="44.0"
+                                                                           layoutY="10.0" maxWidth="-Infinity"
+                                                                           minWidth="-Infinity" prefWidth="50.0"
+                                                                           promptText="Position"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" spacing="5.0">
+                                                    <children>
+                                                        <ComboBox fx:id="ownTargets" prefWidth="120.0"
+                                                                  promptText="Eigene Ziele"/>
+                                                        <ComboBox fx:id="lastTargets" layoutX="15.0" layoutY="15.0"
+                                                                  prefWidth="120.0" promptText="Letzte Ziele"/>
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                                    </padding>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                        <SegmentedButton GridPane.columnSpan="2147483647" GridPane.halignment="CENTER"
+                                                         GridPane.valignment="CENTER">
+                                            <buttons>
+                                                <ToggleButton id="transport" fx:id="transportMission"
+                                                              mnemonicParsing="false" selected="true"/>
+                                                <ToggleButton id="attack" fx:id="attackMIssion"
+                                                              mnemonicParsing="false"/>
+                                                <ToggleButton id="station" fx:id="stationMission"
+                                                              mnemonicParsing="false"/>
+                                                <ToggleButton id="spy" fx:id="spionageMission" mnemonicParsing="false"/>
+                                                <ToggleButton id="break-down" fx:id="breakDownMission"
+                                                              mnemonicParsing="false"/>
+                                                <ToggleButton id="colonize" fx:id="colonizeMission"
+                                                              mnemonicParsing="false"/>
+                                                <ToggleButton id="destroy" fx:id="destroyMission"
+                                                              mnemonicParsing="false"/>
+                                                <ToggleButton id="aks" fx:id="aksMission" mnemonicParsing="false"/>
+                                                <ToggleButton id="expedition" fx:id="expeditionMission"
+                                                              mnemonicParsing="false"/>
+                                                <ToggleButton id="stop-by" fx:id="stopByMission" contentDisplay="CENTER"
+                                                              mnemonicParsing="false"/>
+                                            </buttons>
+                                        </SegmentedButton>
+                                        <VBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="3">
+                                            <children>
+                                                <ImageView fx:id="bodyImage" fitHeight="40.0" fitWidth="60.0"
+                                                           pickOnBounds="true" preserveRatio="true"/>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                    <children>
+                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                                              text="Startkoordinaten"/>
+                                                        <Text fx:id="ownGalaxy" layoutX="10.0" layoutY="23.0"
+                                                              strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+                                                        <Text fx:id="ownSystem" layoutX="32.0" layoutY="23.0"
+                                                              strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+                                                        <Text fx:id="ownPosition" layoutX="54.0" layoutY="23.0"
+                                                              strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                        <HBox alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" spacing="5.0"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Entfernung:"/>
+                                                <Text fx:id="distance" layoutX="37.0" layoutY="40.0"
+                                                      strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                            </padding>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="4">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flugzeit"/>
+                                                <Text fx:id="flightTime" layoutX="129.0" layoutY="27.0"
+                                                      strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.halignment="LEFT"
+                                              GridPane.rowIndex="5">
+                                            <children>
+                                                <HBox alignment="CENTER">
+                                                    <children>
+                                                        <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                                              text="Treibstoffverbrauch"/>
+                                                        <Text fx:id="fuelConsumption" layoutX="10.0" layoutY="27.0"
+                                                              strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1"
+                                              GridPane.rowIndex="4">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ankunft"/>
+                                                <Text layoutX="92.0" layoutY="28.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="0"/>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                            </padding>
+                                        </HBox>
+                                        <VBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnSpan="2147483647"
+                                              GridPane.halignment="LEFT" GridPane.rowIndex="7">
+                                            <children>
+                                                <SegmentedButton fx:id="speedFactorGroup">
+                                                    <buttons>
+                                                        <ToggleButton mnemonicParsing="false" text="10"/>
+                                                        <ToggleButton mnemonicParsing="false" text="20"/>
+                                                        <ToggleButton mnemonicParsing="false" text="30"/>
+                                                        <ToggleButton mnemonicParsing="false" text="40"/>
+                                                        <ToggleButton mnemonicParsing="false" text="50"/>
+                                                        <ToggleButton mnemonicParsing="false" text="60"/>
+                                                        <ToggleButton mnemonicParsing="false" text="70"/>
+                                                        <ToggleButton mnemonicParsing="false" text="80"/>
+                                                        <ToggleButton mnemonicParsing="false" text="90"/>
+                                                        <ToggleButton mnemonicParsing="false" selected="true"
+                                                                      text="100"/>
+                                                    </buttons>
+                                                </SegmentedButton>
+                                            </children>
+                                        </VBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1"
+                                              GridPane.rowIndex="5">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rückkehr"/>
+                                                <Text layoutX="92.0" layoutY="27.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="0"/>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                            </padding>
+                                        </HBox>
+                                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0"
+                                              GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fitHeight="32.0" fitWidth="48.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/metalIcon.png"/>
+                                                    </image>
+                                                </ImageView>
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <TextField fx:id="transportMetField"/>
+                                                        <HBox spacing="5.0">
+                                                            <children>
+                                                                <Button maxHeight="-Infinity" maxWidth="-Infinity"
+                                                                        minHeight="-Infinity" minWidth="-Infinity"
+                                                                        mnemonicParsing="false" onAction="#noMet"
+                                                                        prefHeight="17.0" prefWidth="20.0"
+                                                                        styleClass="removeAll"/>
+                                                                <Button maxHeight="-Infinity" maxWidth="-Infinity"
+                                                                        minHeight="-Infinity" minWidth="-Infinity"
+                                                                        mnemonicParsing="false" onAction="#allMet"
+                                                                        prefHeight="17.0" prefWidth="20.0"
+                                                                        styleClass="addAll"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                                <ImageView fitHeight="32.0" fitWidth="48.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/crystalIcon.png"/>
+                                                    </image>
+                                                </ImageView>
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <TextField fx:id="transportCrysField"/>
+                                                        <HBox spacing="5.0">
+                                                            <children>
+                                                                <Button maxHeight="-Infinity" maxWidth="-Infinity"
+                                                                        minHeight="-Infinity" minWidth="-Infinity"
+                                                                        mnemonicParsing="false" onAction="#noCrys"
+                                                                        prefHeight="17.0" prefWidth="20.0"
+                                                                        styleClass="removeAll"/>
+                                                                <Button maxHeight="-Infinity" maxWidth="-Infinity"
+                                                                        minHeight="-Infinity" minWidth="-Infinity"
+                                                                        mnemonicParsing="false" onAction="#allCrys"
+                                                                        prefHeight="17.0" prefWidth="20.0"
+                                                                        styleClass="addAll"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                                <ImageView fitHeight="32.0" fitWidth="48.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/deutIcon.png"/>
+                                                    </image>
+                                                </ImageView>
+                                                <VBox prefHeight="42.0" prefWidth="149.0" spacing="5.0">
+                                                    <children>
+                                                        <TextField fx:id="transportDeutField"/>
+                                                        <HBox spacing="5.0">
+                                                            <children>
+                                                                <Button maxHeight="-Infinity" maxWidth="-Infinity"
+                                                                        minHeight="-Infinity" minWidth="-Infinity"
+                                                                        mnemonicParsing="false" onAction="#noDeut"
+                                                                        prefHeight="17.0" prefWidth="20.0"
+                                                                        styleClass="removeAll"/>
+                                                                <Button maxHeight="-Infinity" maxWidth="-Infinity"
+                                                                        minHeight="-Infinity" minWidth="-Infinity"
+                                                                        mnemonicParsing="false" onAction="#allDeut"
+                                                                        prefHeight="17.0" prefWidth="20.0"
+                                                                        styleClass="addAll"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                            </padding>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnSpan="3"
+                                              GridPane.rowIndex="2">
+                                            <children>
+                                                <VBox alignment="CENTER">
+                                                    <children>
+                                                        <ProgressBar fx:id="capacityBar" prefWidth="200.0"
+                                                                     progress="0.0"/>
+                                                        <Text fx:id="capacityDescriptor" strokeType="OUTSIDE"
+                                                              strokeWidth="0.0"/>
+                                                    </children>
+                                                </VBox>
+                                                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                        minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0"
+                                                        prefWidth="40.0" styleClass="nothing"/>
+                                                <Button layoutX="210.0" layoutY="33.0" maxHeight="-Infinity"
+                                                        maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                                                        mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0"
+                                                        styleClass="all"/>
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="6">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Geschwindigkeit"/>
+                                                <Text fx:id="speed" layoutX="129.0" layoutY="28.0" strokeType="OUTSIDE"
+                                                      strokeWidth="0.0" text="0"/>
+                                            </children>
+                                        </HBox>
+                                        <HBox fx:id="holdTime" alignment="CENTER_LEFT" layoutX="33.0" layoutY="377.0"
+                                              spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                    </padding>
+                                </GridPane>
+                                <GridPane alignment="CENTER" hgap="5.0" layoutX="10.0" layoutY="10.0" vgap="5.0"
+                                          VBox.vgrow="NEVER">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="100.0"/>
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0"
+                                                        vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="120.0"
+                                                        vgrow="NEVER"/>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0"
+                                                        vgrow="NEVER"/>
+                                    </rowConstraints>
+                                    <children>
+                                        <VBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <ImageView fx:id="kjImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/kJUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="kJValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <HBox alignment="CENTER_RIGHT" spacing="5.0" GridPane.columnIndex="3"
+                                              GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                                            <children>
+                                                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                        minWidth="-Infinity" mnemonicParsing="false" onAction="#noFleet"
+                                                        prefHeight="40.0" prefWidth="40.0" styleClass="nothing"/>
+                                                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                                        minWidth="-Infinity" mnemonicParsing="false"
+                                                        onAction="#allFleet" prefHeight="40.0" prefWidth="40.0"
+                                                        styleClass="all"/>
+                                                <Button mnemonicParsing="false" onAction="#lastFleet" text="Letzte"/>
+                                                <Button mnemonicParsing="false" onAction="#showApi" text="API"/>
+                                                <Button fx:id="sendFleetBtn" defaultButton="true"
+                                                        mnemonicParsing="false" onAction="#sendFleet" text="Senden"/>
+                                            </children>
+                                            <GridPane.margin>
+                                                <Insets right="50.0"/>
+                                            </GridPane.margin>
+                                        </HBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1">
+                                            <children>
+                                                <ImageView fx:id="sJImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/sJUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="sJValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="2">
+                                            <children>
+                                                <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true"
+                                                           preserveRatio="true" fx:id="xerImage">
+                                                    <image>
+                                                        <Image url="@../img/ships/xerAvailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0"
+                                                           fx:id="xerValue"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="3">
+                                            <children>
+                                                <ImageView fx:id="ssImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/ssUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="ssValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="4">
+                                            <children>
+                                                <ImageView fx:id="kTImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/kTUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="kTValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="5">
+                                            <children>
+                                                <ImageView fx:id="gTImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/gTUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="gTValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="6">
+                                            <children>
+                                                <ImageView fx:id="koloImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/koloUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="koloValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fx:id="sxerImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/sxerUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="sxerValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1"
+                                              GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fx:id="bomberImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/BomberUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="bomberValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="2"
+                                              GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fx:id="zerrImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/zerrUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="zerrValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="3"
+                                              GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fx:id="ripImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/ripUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="ripValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="4"
+                                              GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fx:id="recImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/recUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="recValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="5"
+                                              GridPane.rowIndex="1">
+                                            <children>
+                                                <ImageView fx:id="spioImage" fitHeight="80.0" fitWidth="80.0"
+                                                           pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/ships/spioUnavailable.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <TextField fx:id="spioValue" maxWidth="-Infinity" minWidth="-Infinity"
+                                                           prefWidth="80.0"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                    </padding>
+                                </GridPane>
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </content>
+        </Tab>
+        <Tab text="Weg simulieren">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>

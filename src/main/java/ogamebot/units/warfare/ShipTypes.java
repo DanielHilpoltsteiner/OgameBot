@@ -6,7 +6,7 @@ import ogamebot.units.UnitType;
 /**
  *
  */
-public interface ShipTypes extends UnitType<Ship>, WarfareType {
+public interface ShipTypes extends UnitType<Ships>, WarfareType {
     @Override
     Cost getCost(int number);
 }

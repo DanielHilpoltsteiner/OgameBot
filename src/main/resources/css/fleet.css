@@ -1,0 +1,156 @@
+#destroy{
+    -fx-graphic: url(../img/missions/destroyNotSelected.jpg);
+}
+#destroy:hover{
+    -fx-graphic: url(../img/missions/destroyNotSelectedHover.jpg);
+}
+#destroy:selected{
+    -fx-graphic: url(../img/missions/destroySelected.jpg);
+}
+#destroy:selected:hover{
+    -fx-graphic: url(../img/missions/destroySelectedHover.jpg);
+}
+#transport{
+    -fx-graphic: url(../img/missions/transportNotSelected.jpg);
+}
+#transport:hover{
+    -fx-graphic: url(../img/missions/transportNotSelectedHover.jpg);
+}
+#transport:selected{
+    -fx-graphic: url(../img/missions/transportSelected.jpg);
+}
+#transport:selected:hover{
+    -fx-graphic: url(../img/missions/transportSelectedHover.jpg);
+}
+#attack{
+    -fx-graphic: url(../img/missions/attackNotSelected.jpg);
+}
+#attack:hover{
+    -fx-graphic: url(../img/missions/attackNotSelectedHover.jpg);
+}
+#attack:selected{
+    -fx-graphic: url(../img/missions/attackSelected.jpg);
+}
+#attack:selected:hover{
+    -fx-graphic: url(../img/missions/attackSelectedHover.jpg);
+}
+#station{
+    -fx-graphic: url(../img/missions/stationNotSelected.jpg);
+}
+#station:hover{
+    -fx-graphic: url(../img/missions/stationNotSelectedHover.jpg);
+}
+#station:selected{
+    -fx-graphic: url(../img/missions/stationSelected.jpg);
+}
+#station:selected:hover{
+    -fx-graphic: url(../img/missions/stationSelectedHover.jpg);
+}
+#spy{
+    -fx-graphic: url(../img/missions/spyNotSelected.jpg);
+}
+#spy:hover{
+    -fx-graphic: url(../img/missions/spyNotSelectedHover.jpg);
+}
+#spy:selected{
+    -fx-graphic: url(../img/missions/spySelected.jpg);
+}
+#spy:selected:hover{
+    -fx-graphic: url(../img/missions/spySelectedHover.jpg);
+}
+#break-down{
+    -fx-graphic: url(../img/missions/breakDownNotSelected.jpg);
+}
+#break-down:hover{
+    -fx-graphic: url(../img/missions/breakDownNotSelectedHover.jpg);
+}
+#break-down:selected{
+    -fx-graphic: url(../img/missions/breakDownSelected.jpg);
+}
+#break-down:selected:hover{
+    -fx-graphic: url(../img/missions/breakDownSelectedHover.jpg);
+}
+#colonize{
+    -fx-graphic: url(../img/missions/colonizeNotSelected.jpg);
+}
+#colonize:hover{
+    -fx-graphic: url(../img/missions/colonizeNotSelectedHover.jpg);
+}
+#colonize:selected{
+    -fx-graphic: url(../img/missions/colonizeSelected.jpg);
+}
+#colonize:selected:hover{
+    -fx-graphic: url(../img/missions/colonizeSelectedHover.jpg);
+}
+#aks{
+    -fx-graphic: url(../img/missions/aksNotSelected.jpg);
+}
+#aks:hover{
+    -fx-graphic: url(../img/missions/aksNotSelectedHover.jpg);
+}
+#aks:selected{
+    -fx-graphic: url(../img/missions/aksSelected.jpg);
+}
+#aks:selected:hover{
+    -fx-graphic: url(../img/missions/aksSelectedHover.jpg);
+}
+#expedition{
+    -fx-graphic: url(../img/missions/expeditionNotSelected.jpg);
+}
+#expedition:hover{
+    -fx-graphic: url(../img/missions/expeditionNotSelectedHover.jpg);
+}
+#expedition:selected{
+    -fx-graphic: url(../img/missions/expeditionSelected.jpg);
+}
+#expedition:selected:hover{
+    -fx-graphic: url(../img/missions/expeditionSelectedHover.jpg);
+}
+#stop-by{
+    -fx-graphic: url(../img/missions/stopByNotSelected.jpg);
+}
+#stop-by:hover{
+    -fx-graphic: url(../img/missions/stopByNotSelectedHover.jpg);
+}
+#stop-by:selected{
+    -fx-graphic: url(../img/missions/stopBySelected.jpg);
+}
+#stop-by:selected:hover{
+    -fx-graphic: url(../img/missions/stopBySelectedHover.jpg);
+}
+#planet-target{
+    -fx-graphic: url(../img/planetIconNotSelected.png);
+}
+#planet-target:selected{
+    -fx-graphic: url(../img/planetIconSelected.png);
+}
+#moon-target{
+    -fx-graphic: url(../img/moonIconNotSelected.png);
+}
+#moon-target:selected{
+    -fx-graphic: url(../img/moonIconSelected.png);
+}
+#debris-target{
+    -fx-graphic: url(../img/debrisIconNotSelected.png);
+}
+#debris-target:selected{
+    -fx-graphic: url(../img/debrisIconSelected.png);
+}
+.addAll{
+    -fx-graphic: url(../img/allIcon.gif);
+}
+.removeAll{
+    -fx-graphic: url(../img/nothingIcon.gif);
+}
+.all{
+    -fx-graphic: url(../img/all.png);
+}
+.all:hover{
+    -fx-graphic: url(../img/allHover.png);
+}
+.nothing{
+    -fx-graphic: url(../img/nothing.png);
+}
+.nothing:hover{
+    -fx-graphic: url(../img/nothingHover.png);
+}

@@ -12,8 +12,8 @@ abstract class MobileWarfareUnit extends WarfareUnit {
     private IntegerProperty load_capacity = new SimpleIntegerProperty();
     private IntegerProperty fuel_consumption = new SimpleIntegerProperty();
 
-    MobileWarfareUnit(RapidFire rapidFire, int structurePoints, double shieldStrength, double attackPower, int speed, int load_capacity, int fuel_consumption) {
-        super(rapidFire, structurePoints, shieldStrength, attackPower);
+    MobileWarfareUnit(int structurePoints, double shieldStrength, double attackPower, int speed, int load_capacity, int fuel_consumption) {
+        super(structurePoints, shieldStrength, attackPower);
         Condition.check().positive(speed, load_capacity, fuel_consumption);
 
         this.speed.set(speed);

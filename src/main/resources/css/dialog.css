@@ -1,0 +1,7 @@
+.root{
+    -fx-base: #252526;
+}
+.container-grid{
+    -fx-hgap: 5;
+    -fx-vgap: 5;
+}

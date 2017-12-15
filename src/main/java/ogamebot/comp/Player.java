@@ -1,5 +1,8 @@
 package ogamebot.comp;
 
+import gorgon.external.DataAccess;
+import gorgon.external.GorgonEntry;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,81 +10,133 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import ogamebot.calc.Production;
+import ogamebot.data.daos.PlayerDao;
+import ogamebot.gui.main.displayTree.TreeAble;
+import ogamebot.units.astroObjects.CelestialBody;
+import ogamebot.units.astroObjects.Moon;
 import ogamebot.units.astroObjects.Planet;
 import ogamebot.units.research.Research;
-import ogamebot.units.research.ResearchFields;
+import ogamebot.units.research.ResearchField;
+import ogamebot.units.research.Researches;
 import tools.Condition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
  */
-public class Player implements Comparable<Player>, GameEntity {
+@DataAccess(PlayerDao.class)
+public class Player implements TreeAble, GorgonEntry {
+    private boolean isOnlinePlayer = false;
+
+    private boolean geologist = false;
+    private boolean admiral = false;
+    private boolean engineer = false;
+    private boolean technocrat = false;
+    private boolean commander = false;
+
     private StringProperty name = new SimpleStringProperty();
     private IntegerProperty points = new SimpleIntegerProperty();
     private IntegerProperty highscore = new SimpleIntegerProperty();
+    private IntegerProperty playerPlace = new SimpleIntegerProperty();
     private IntegerProperty darkMatter = new SimpleIntegerProperty();
 
-    private Map<ResearchFields, Research> research = new HashMap<>();
+    private Researches researches = new Researches();
     private ObservableList<Planet> planets = FXCollections.observableArrayList();
-    private List<Production> productions = new ArrayList<>();
-    private transient Universe universe;
+    private Universe universe;
+
+    private Map<Planet, Production> productionMap = new TreeMap<>(Comparator.comparing(Planet::getName));
 
     public Player(String name, Universe universe) {
-        Condition.check().nonNull(universe, name).notEmpty(name);
+        Condition.check().nonNull(name).notEmpty(name);
         this.universe = universe;
         this.name.setValue(name);
 
         planets.addListener((ListChangeListener<? super Planet>) observable -> {
             if (observable.next()) {
-                observable.getAddedSubList().forEach(planet -> productions.add(new Production(planet)));
+                observable.getAddedSubList().forEach(planet -> productionMap.put(planet, new Production(planet)));
+                observable.getRemoved().forEach(planet -> productionMap.remove(planet));
             }
         });
     }
 
-    public Player(String name, int points, int highscore, int darkMatter, Universe universe) {
-        this(name, universe);
-        Condition.check().positive(points, highscore, darkMatter).nonNull(research);
-        this.points.set(points);
-        this.highscore.set(highscore);
-        this.darkMatter.set(darkMatter);
+    public Player(String name, int points, int highscore, int darkMatter, boolean geologist, boolean admiral, boolean engineer, boolean technocrat, boolean commander, Collection<Research> researches, Collection<Planet> planets, Universe universe, boolean isOnlinePlayer) {
+        this(name, points, highscore, darkMatter, universe);
+        this.geologist = geologist;
+        this.admiral = admiral;
+        this.engineer = engineer;
+        this.technocrat = technocrat;
+        this.commander = commander;
+        this.researches = new Researches(researches);
+        this.isOnlinePlayer = isOnlinePlayer;
+        this.planets.addAll(planets);
+        this.planets.forEach(planet -> planet.setPlayer(this));
     }
 
-    @Override
-    public int compareTo(Player o) {
-        return 0;
+    public Player(String name, int points, int playerPlace, int darkMatter, Universe universe) {
+        this(name, universe);
+//        Condition.check().positive(points, highscore, darkMatter);
+        this.points.set(points);
+        this.playerPlace.set(playerPlace);
+        this.darkMatter.set(darkMatter);
     }
 
     public Universe getUniverse() {
         return universe;
     }
 
-    public String getName() {
-        return name.get();
+    public void setUniverse(Universe universe) {
+        this.universe = universe;
     }
 
     public int getPoints() {
         return points.get();
     }
 
+    public int getPlayerPlace() {
+        return playerPlace.get();
+    }
+
     public int getHighscore() {
         return highscore.get();
+    }
+
+    public IntegerProperty highscoreProperty() {
+        return highscore;
     }
 
     public int getDarkMatter() {
         return darkMatter.get();
     }
 
-    public Research getResearch(ResearchFields fields) {
-        return research.computeIfAbsent(fields, Research::new);
+    public Research getResearch(ResearchField fields) {
+        return researches.getValue(fields);
     }
 
     public ObservableList<Planet> getPlanets() {
         return planets;
+    }
+
+    public ObservableList<CelestialBody> getCelestialBodies() {
+        ObservableList<CelestialBody> wrapper = FXCollections.observableArrayList();
+        final List<Moon> moons = planets.stream().filter(planet -> planet.getMoon() != null).map(Planet::getMoon).collect(Collectors.toList());
+        wrapper.addAll(moons);
+        Bindings.bindContent(wrapper, planets);
+
+        planets.forEach(planet -> planet.moonProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                wrapper.add(newValue);
+            } else {
+                wrapper.remove(oldValue);
+            }
+        }));
+        return wrapper;
+    }
+
+    public Collection<Research> getResearches() {
+        return researches.getValues();
     }
 
     @Override
@@ -106,18 +161,18 @@ public class Player implements Comparable<Player>, GameEntity {
     public String toString() {
         return "Player{" +
                 "name=" + name +
+                ", points=" + points +
+                ", highscore=" + highscore +
+                ", playerPlace=" + playerPlace +
+                ", darkMatter=" + darkMatter +
+                ", researches=" + researches +
+                ", planets=" + planets +
                 ", universe=" + universe +
                 '}';
     }
 
-    @Override
-    public String getText() {
+    public String getName() {
         return name.get();
-    }
-
-    @Override
-    public List<GameEntity> getChildren() {
-        return new ArrayList<>();
     }
 
     public StringProperty nameProperty() {
@@ -128,8 +183,8 @@ public class Player implements Comparable<Player>, GameEntity {
         return points;
     }
 
-    public IntegerProperty highscoreProperty() {
-        return highscore;
+    public IntegerProperty playerPlaceProperty() {
+        return playerPlace;
     }
 
     public IntegerProperty darkMatterProperty() {
@@ -137,22 +192,51 @@ public class Player implements Comparable<Player>, GameEntity {
     }
 
     public boolean hasGeologist() {
-        return false;
+        return geologist;
     }
 
     public boolean hasCommander() {
-        return false;
+        return commander;
     }
 
     public boolean hasAdmiral() {
-        return false;
+        return admiral;
     }
 
     public boolean hasEngineer() {
-        return false;
+        return engineer;
     }
 
     public boolean hasTechnocrat() {
-        return false;
+        return technocrat;
+    }
+
+    public boolean isOnlinePlayer() {
+        return isOnlinePlayer;
+    }
+
+    public void setOnlinePlayer(boolean onlinePlayer) {
+        isOnlinePlayer = onlinePlayer;
+    }
+
+    @Override
+    public int compareTo(GorgonEntry gorgonEntry) {
+        if (gorgonEntry == null) return -1;
+        if (gorgonEntry == this) return 0;
+        if (gorgonEntry.getClass() != getClass()) return -1;
+
+        Player player = (Player) gorgonEntry;
+        int compare = this.getName().compareTo(player.getName());
+
+        if (compare == 0) {
+            compare = getUniverse().compareTo(player.getUniverse());
+        }
+        return compare;
+
+
+    }
+
+    public Researches getResearch() {
+        return null;
     }
 }

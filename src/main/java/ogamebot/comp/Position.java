@@ -6,6 +6,7 @@ import tools.Condition;
  *
  */
 public class Position {
+    public static final Position EMPTY = new Position(0, 0, 0);
     private int galaxy;
     private int solarSystem;
     private int planetPosition;
@@ -25,7 +26,8 @@ public class Position {
         return solarSystem;
     }
 
-    public int getPlanetPosition() {
+    public int getSystemPosition() {
         return planetPosition;
     }
+
 }

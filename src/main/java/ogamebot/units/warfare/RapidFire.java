@@ -9,6 +9,7 @@ import java.util.Set;
  */
 public class RapidFire {
     public static RapidFire NONE = new RapidFire();
+
     private final Map<ShipType, Integer> takes;
     private final Map<WarfareType, Integer> deals;
 

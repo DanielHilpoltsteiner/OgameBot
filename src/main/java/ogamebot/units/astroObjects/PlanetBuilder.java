@@ -2,7 +2,13 @@ package ogamebot.units.astroObjects;
 
 import ogamebot.comp.Player;
 import ogamebot.comp.Position;
+import ogamebot.units.building.Building;
 import ogamebot.units.units.Resource;
+import ogamebot.units.warfare.DefenceUnit;
+import ogamebot.units.warfare.Ships;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class PlanetBuilder {
     private final String name;
@@ -12,6 +18,9 @@ public class PlanetBuilder {
     private Moon moon;
     private Resource debrisField;
     private Player player;
+    private Collection<DefenceUnit> defences = new ArrayList<>();
+    private Collection<Ships> ships = new ArrayList<>();
+    private Collection<Building> buildings = new ArrayList<>();
 
     public PlanetBuilder(String name) {
         this.name = name;
@@ -47,11 +56,22 @@ public class PlanetBuilder {
         return this;
     }
 
+    public PlanetBuilder setDefences(Collection<DefenceUnit> defences) {
+        this.defences = defences;
+        return this;
+    }
+
+    public PlanetBuilder setShips(Collection<Ships> ships) {
+        this.ships = ships;
+        return this;
+    }
+
+    public PlanetBuilder setBuildings(Collection<Building> buildings) {
+        this.buildings = buildings;
+        return this;
+    }
+
     public Planet createPlanet() {
-        Planet planet = new Planet(maxT, fields, position, moon, debrisField, player, name);
-        if (moon != null) {
-            moon.setPlanet(planet);
-        }
-        return planet;
+        return new Planet(maxT, fields, position, moon, debrisField, player, name, defences, ships, buildings);
     }
 }

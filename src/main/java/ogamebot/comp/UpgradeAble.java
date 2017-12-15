@@ -7,7 +7,7 @@ import ogamebot.units.UnitType;
 /**
  *
  */
-public interface UpgradeAble extends CostAble, Comparable<UpgradeAble> {
+public interface UpgradeAble {
     IntegerProperty counterProperty();
 
     int getCounter();
@@ -17,4 +17,6 @@ public interface UpgradeAble extends CostAble, Comparable<UpgradeAble> {
     String getName();
 
     ReadOnlyStringProperty nameProperty();
+
+    Cost getCost();
 }

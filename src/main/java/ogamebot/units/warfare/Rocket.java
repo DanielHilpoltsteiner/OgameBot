@@ -3,7 +3,6 @@ package ogamebot.units.warfare;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import ogamebot.comp.Cost;
-import ogamebot.comp.UpgradeAble;
 import ogamebot.units.UnitType;
 
 /**
@@ -14,7 +13,7 @@ public class Rocket extends MobileWarfareUnit {
     private final ReadOnlyStringProperty name;
 
     Rocket(int structurePoints, int shieldStrength, int attackPower, Rockets rockets) {
-        super(RapidFire.NONE, structurePoints, shieldStrength, attackPower, 0, 0, 0);
+        super(structurePoints, shieldStrength, attackPower, 0, 0, 0);
         this.rockets = rockets;
         name = new SimpleStringProperty(rockets.getName());
     }
@@ -32,11 +31,6 @@ public class Rocket extends MobileWarfareUnit {
     @Override
     public ReadOnlyStringProperty nameProperty() {
         return name;
-    }
-
-    @Override
-    public int compareTo(UpgradeAble o) {
-        return 0;
     }
 
     @Override

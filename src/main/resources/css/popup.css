@@ -1,7 +1,7 @@
 .text{
     -fx-fill: #dbd9d9;
 }
-.requirement-Pane{
+.container-Pane{
     -fx-background-color: rgb(37, 37, 38,0.7);
     -fx-hgap: 5;
     -fx-vgap: 5;

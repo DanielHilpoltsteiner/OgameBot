@@ -1,7 +1,7 @@
 package ogamebot.gui;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -43,16 +43,11 @@ public class ErrorPopup {
         pane.setBackground(value);
         popup.getContent().add(pane);
 
-        double x = node.getScene().getWindow().getX();
-        double y = node.getScene().getWindow().getY();
+        final Bounds boundsInLocal = node.getBoundsInLocal();
+        final Bounds bounds = node.localToScreen(boundsInLocal);
 
-        Point2D point2D = node.localToScene(0, 0);
-
-        double anchorX = point2D.getX() + x;
-        double anchorY = point2D.getY() + y;
-
-        double prefWidth = pane.getPrefWidth();
-        double prefHeight = pane.getPrefHeight();
-        popup.show(node, anchorX - prefWidth, anchorY - prefHeight);
+        final double anchorY = bounds.getMinY() - bounds.getHeight();
+        final double anchorX = bounds.getMaxX();
+        popup.show(node, anchorX, anchorY);
     }
 }

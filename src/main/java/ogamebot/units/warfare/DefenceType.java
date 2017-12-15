@@ -1,13 +1,13 @@
 package ogamebot.units.warfare;
 
+import ogamebot.calc.Calculator;
 import ogamebot.comp.Cost;
 import ogamebot.comp.Requirement;
-import ogamebot.tools.Calculator;
 
 import java.util.Map;
 
-import static ogamebot.units.building.PlanetBuilding.SPACESHIPSHIPYARD;
-import static ogamebot.units.research.ResearchFields.*;
+import static ogamebot.units.building.BuildingType.SPACESHIPSHIPYARD;
+import static ogamebot.units.research.ResearchField.*;
 import static ogamebot.units.warfare.ShipType.*;
 
 /**
@@ -151,7 +151,7 @@ public enum DefenceType implements DefenseMachinery {
 
     @Override
     public DefenceUnit create() {
-        return new DefenceUnit(getRapidFire(), structure, shield, attack, this);
+        return new DefenceUnit(structure, shield, attack, this);
     }
 
     @Override

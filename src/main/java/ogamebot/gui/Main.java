@@ -1,32 +1,44 @@
 package ogamebot.gui;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import afester.javafx.svg.SvgLoader;
 import javafx.application.Application;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import ogamebot.comp.GameEntity;
 import ogamebot.comp.Player;
 import ogamebot.comp.Universe;
-import ogamebot.units.astroObjects.PlanetBuilder;
-import tools.JsonAdapter;
+import ogamebot.concurrent.OnStartTask;
+import ogamebot.data.DataManager;
+import ogamebot.gui.dialogs.AddPlanet;
+import ogamebot.gui.dialogs.AddPlayer;
+import ogamebot.gui.dialogs.AddUniverse;
+import ogamebot.gui.dialogs.LoginDialog;
+import ogamebot.gui.main.displayTree.DisplayedTree;
+import ogamebot.gui.main.displayTree.TreeAble;
+import ogamebot.online.AccountManager;
+import ogamebot.units.astroObjects.CelestialBody;
+import ogamebot.units.astroObjects.Moon;
+import ogamebot.units.astroObjects.Planet;
+import org.controlsfx.control.HiddenSidesPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -34,13 +46,25 @@ import java.util.*;
 public class Main extends Application implements Initializable {
 
     @FXML
+    private ListView<CelestialBody> celestialBodyList;
+
+    @FXML
     private MenuBar menuBar;
+
+    @FXML
+    private Button addUniverseBtn;
+
+    @FXML
+    private Button addPlanetBtn;
+
+    @FXML
+    private Button addPlayerBtn;
 
     @FXML
     private VBox root;
 
     @FXML
-    private TreeView<GameEntity> uniPlayerTree;
+    private TreeView<TreeAble> uniPlayerTree;
 
     @FXML
     private Text universeName;
@@ -54,10 +78,17 @@ public class Main extends Application implements Initializable {
     @FXML
     private TabPane playerContent;
 
+    @FXML
+    private HiddenSidesPane hiddenUniTree;
+
+    private AccountManager manager = AccountManager.getInstance();
+    private DisplayedTree tree = new DisplayedTree();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
+        OnStartTask.start();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         Parent root = loader.load();
 
         primaryStage.setTitle("OgameBot");
@@ -69,61 +100,50 @@ public class Main extends Application implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DataHolder.getInstance().addListener((observable, oldValue, newValue) -> loadPlayer(newValue));
+        DataHolder.getInstance().addPlayerListener((observable, oldValue, newValue) -> loadPlayer(newValue));
         loadContent();
         setPaneListener(root);
         readyTree();
+        initGui();
     }
 
-    private GameEntity entityRoot = new GameEntity() {
-        List<GameEntity> children = getEntities();
+    @FXML
+    void addUniverse() {
+        Dialog<Universe> dialog = new AddUniverse();
+        final Optional<Universe> optionalUniverse = dialog.showAndWait();
+        optionalUniverse.ifPresent(tree::add);
+    }
 
-        @Override
-        public String getText() {
-            return "ROOT";
-        }
+    @FXML
+    void addPlayer() {
+        final List<Universe> universes = tree.getUniverses();
+        Dialog<Player> dialog = new AddPlayer(universes);
 
-        @Override
-        public List<GameEntity> getChildren() {
-            return children;
-        }
-    };
+        final Optional<Player> optionalPlayer = dialog.showAndWait();
+        optionalPlayer.ifPresent(tree::add);
+    }
+
+    @FXML
+    void addPlanet() {
+        final List<Player> players = tree.getPlayers();
+
+        Dialog<Planet> dialog = new AddPlanet(players);
+
+        final Optional<Planet> optionalPlanet = dialog.showAndWait();
+        optionalPlanet.ifPresent(planet -> {
+            final Player player = planet.getPlayer();
+            player.getPlanets().add(planet);
+        });
+    }
 
     @FXML
     void saveData() {
-        Gson gson = new GsonBuilder().
-                setPrettyPrinting().
-                registerTypeAdapter(Set.class, new JsonAdapter<>()).
-                registerTypeAdapter(Map.class, new JsonAdapter<>()).
-                registerTypeAdapter(IntegerProperty.class, new JsonAdapter<>()).
-                registerTypeAdapter(ObjectProperty.class, new JsonAdapter<>()).
-                registerTypeAdapter(StringProperty.class, new JsonAdapter<>()).
-                registerTypeAdapter(DoubleProperty.class, new JsonAdapter<>()).
-                create();
-
-        if (entityRoot != null) {
-            // TODO: 09.11.2017 get new gson for java 9?
-            // TODO: 09.11.2017 error for linked treemap internal??
-
-        }
-    }
-
-    private void loadPlayer(Player newValue) {
-        if (newValue != null) {
-            playerName.textProperty().bind(newValue.nameProperty());
-            universeName.textProperty().bind(newValue.getUniverse().nameProperty());
-
-            pointsValue.textProperty().bind(newValue.pointsProperty().asString());
-        } else {
-            playerName.setText("N/A");
-            universeName.setText("N/A");
-            pointsValue.setText("0");
-        }
+        DataManager.save();
     }
 
     @FXML
     void openSettings() {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         try {
             Parent root = loader.load();
             Stage settingsStage = new Stage();
@@ -141,75 +161,135 @@ public class Main extends Application implements Initializable {
     }
 
     private void readyTree() {
+        Platform.runLater(() -> {
+            final List<Universe> universes = OnStartTask.get();
+//            final List<Universe> universes = DataManager.getStubs();
+            universes.forEach(tree::add);
+            uniPlayerTree.setRoot(tree.getRoot());
+            readyTreeSelection();
 
-        TreeItem<GameEntity> root = new TreeItem<>(entityRoot);
-        resolveTree(entityRoot, root);
-        uniPlayerTree.setRoot(root);
+            checkOnlinePlayer(universes);
+        });
 
-        readyTreeSelection();
 
         uniPlayerTree.setCellFactory(param -> new TreeCell<>() {
             @Override
-            protected void updateItem(GameEntity item, boolean empty) {
+            protected void updateItem(TreeAble item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (empty || item == null) {
-                    setText(null);
+
+                if (item == null || empty) {
                     setGraphic(null);
+                    setText(null);
                 } else {
-                    setText(item.getText());
+                    setGraphic(null);
+                    setText(item.getName());
                 }
+            }
+        });
+
+        uniPlayerTree.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DELETE) {
+                final TreeItem<TreeAble> item = uniPlayerTree.getSelectionModel().getSelectedItem();
+                if (item != null) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                    if (item.getValue() instanceof Player) {
+                        alert.setContentText("Sind sie sich sicher das sie dieses Universum mit allen Spielern entfernen wollen?");
+                    } else if (item.getValue() instanceof Universe) {
+                        alert.setContentText("Sind sie sich sicher das sie diesen Spieler entfernen wollen?");
+                    }
+                    final Optional<ButtonType> optional = alert.showAndWait();
+                    optional.ifPresent(buttonType -> {
+                        if (buttonType == ButtonType.OK) {
+                            tree.remove(item.getValue());
+                        }
+                    });
+                }
+                event.consume();
             }
         });
     }
 
+    private void checkOnlinePlayer(List<Universe> universes) {
+        final List<Player> onlinePlayers = universes.stream().flatMap(universe -> universe.getPlayers().stream()).filter(Player::isOnlinePlayer).collect(Collectors.toList());
+        onlinePlayers.forEach(player -> {
+            final LoginDialog dialog = new LoginDialog();
+            dialog.showAndWait();
+        });
+    }
+
+    private void loadPlayer(Player newValue) {
+        if (newValue != null) {
+            playerName.textProperty().bind(newValue.nameProperty());
+            universeName.textProperty().bind(newValue.getUniverse().nameProperty());
+
+            pointsValue.textProperty().bind(newValue.pointsProperty().asString());
+        } else {
+            playerName.setText("N/A");
+            universeName.setText("N/A");
+            pointsValue.setText("0");
+        }
+    }
+
+    private void initGui() {
+        final Group universe = new SvgLoader().loadSvg(getClass().getResourceAsStream("/img/universeIcon.svg"));
+        final Group player = new SvgLoader().loadSvg(getClass().getResourceAsStream("/img/playerIcon.svg"));
+
+        //missing rx element
+//        final Group planet = new SvgLoader().loadSvg(getClass().getResourceAsStream("/img/planetIcon.svg"));
+
+        addUniverseBtn.setGraphic(universe);
+        addPlayerBtn.setGraphic(player);
+        addPlanetBtn.setGraphic(new ImageView(getClass().getResource("/img/planetIcon.png").toExternalForm()));
+
+        celestialBodyList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(CelestialBody item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+
+                    ImageView icon = null;
+                    if (item instanceof Planet) {
+                        icon = new ImageView(getClass().getResource("/img/planetIconSelected.png").toExternalForm());
+                    } else if (item instanceof Moon) {
+                        icon = new ImageView(getClass().getResource("/img/moonIconSelected.png").toExternalForm());
+                    }
+                    setGraphic(icon);
+                    setText(item.getName());
+                }
+            }
+        });
+
+        celestialBodyList.
+                getSelectionModel().
+                selectedItemProperty().
+                addListener((observable, oldValue, newValue) -> DataHolder.getInstance().setCurrentBody(newValue));
+    }
+
     private void readyTreeSelection() {
         uniPlayerTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isLeaf() && newValue.getValue() instanceof Player) {
-                DataHolder.getInstance().setCurrentPlayer((Player) newValue.getValue());
+            if (newValue != null && newValue.isLeaf() && newValue.getValue() instanceof Player) {
+                final Player currentPlayer = (Player) newValue.getValue();
+                celestialBodyList.setItems(currentPlayer.getCelestialBodies());
+                DataHolder.getInstance().setCurrentPlayer(currentPlayer);
             }
         });
 
         uniPlayerTree.getSelectionModel().selectFirst();
-        TreeItem<GameEntity> selectedItem = uniPlayerTree.getSelectionModel().getSelectedItem();
+        TreeItem<TreeAble> selectedItem = uniPlayerTree.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
-            ObservableList<TreeItem<GameEntity>> children = selectedItem.getChildren();
+            ObservableList<TreeItem<TreeAble>> children = selectedItem.getChildren();
 
             if (!children.isEmpty()) {
                 uniPlayerTree.getSelectionModel().select(children.get(0));
             }
         }
-    }
-
-    private List<GameEntity> getEntities() {
-        Universe value = new Universe(0.1, 0.7, 2, 3, true, true, 25, "orion");
-        Player w = new Player("w", 0, 0, 0, value);
-        Player f = new Player("f", 0, 0, 0, value);
-        Player a = new Player("a", 0, 0, 0, value);
-        Player s = new Player("s", 0, 0, 0, value);
-        Player d = new Player("d", 0, 0, 0, value);
-        Player player1 = new Player("!", 0, 0, 0, value);
-        value.addPlayer(w);
-        value.addPlayer(a);
-        value.addPlayer(s);
-        value.addPlayer(d);
-        value.addPlayer(f);
-        value.addPlayer(player1);
-        player1.getPlanets().add(new PlanetBuilder("franz").setPlayer(player1).createPlanet());
-        player1.getPlanets().add(new PlanetBuilder("hans").setPlayer(player1).createPlanet());
-
-        List<GameEntity> entities = new ArrayList<>();
-        entities.add(value);
-        return entities;
-    }
-
-    private void resolveTree(GameEntity entity, TreeItem<GameEntity> root) {
-        entity.getChildren().forEach(gameEntity -> {
-            TreeItem<GameEntity> item = new TreeItem<>(gameEntity);
-            root.getChildren().add(item);
-            resolveTree(gameEntity, item);
-        });
     }
 
     private void setPaneListener(Parent root) {
@@ -223,11 +303,21 @@ public class Main extends Application implements Initializable {
     }
 
     private void loadContent() {
-        FXMLLoader buildLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/build.fxml"));
-        FXMLLoader overViewLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/overview.fxml"));
+        FXMLLoader buildLoader = new FXMLLoader(getClass().getResource("/fxml/build.fxml"));
+        FXMLLoader overViewLoader = new FXMLLoader(getClass().getResource("/fxml/overview.fxml"));
+        FXMLLoader fleetLoader = new FXMLLoader(getClass().getResource("/fxml/fleet.fxml"));
+        FXMLLoader galaxyViewLoader = new FXMLLoader(getClass().getResource("/fxml/galaxyView.fxml"));
+        FXMLLoader fightSimulatorLoader = new FXMLLoader(getClass().getResource("/fxml/fightSimulator.fxml"));
+        FXMLLoader newsLoader = new FXMLLoader(getClass().getResource("/fxml/news.fxml"));
+        FXMLLoader allianceLoader = new FXMLLoader(getClass().getResource("/fxml/alliance.fxml"));
         try {
             playerContent.getTabs().add(new Tab("Übersicht", overViewLoader.load()));
             playerContent.getTabs().add(new Tab("Ausbauen", buildLoader.load()));
+            playerContent.getTabs().add(new Tab("Flotte", fleetLoader.load()));
+            playerContent.getTabs().add(new Tab("Nachrichten", newsLoader.load()));
+            playerContent.getTabs().add(new Tab("Galaxie", galaxyViewLoader.load()));
+            playerContent.getTabs().add(new Tab("Kampfsimulator", fightSimulatorLoader.load()));
+            playerContent.getTabs().add(new Tab("Kampfsimulator", allianceLoader.load()));
         } catch (IOException e) {
             e.printStackTrace();
         }

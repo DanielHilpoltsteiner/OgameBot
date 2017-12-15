@@ -1,22 +1,23 @@
 package ogamebot.units.warfare;
 
+import ogamebot.calc.Calculator;
 import ogamebot.comp.Cost;
 import ogamebot.comp.Requirement;
-import ogamebot.tools.Calculator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static ogamebot.units.building.PlanetBuilding.SPACESHIPSHIPYARD;
-import static ogamebot.units.research.ResearchFields.*;
+import static ogamebot.units.building.BuildingType.SPACESHIPSHIPYARD;
+import static ogamebot.units.research.ResearchField.*;
 import static ogamebot.units.warfare.DefenceType.*;
 
 /**
  *
  */
 public enum ShipType implements ShipTypes {
-    LIGHT_FIGHTER("Leichter Jäger", 3_000, 1_000, 0, 4_000, 10, 50, 12_500, 50, 20) {
-        private RapidFire rapidFire;private Requirement requirement;
+    LIGHT_FIGHTER("Leichter Jäger", "lJ", 3_000, 1_000, 0, 4_000, 10, 50, 12_500, 50, 20) {
+        private RapidFire rapidFire;
+        private Requirement requirement;
 
         @Override
         public RapidFire getRapidFire() {
@@ -39,7 +40,7 @@ public enum ShipType implements ShipTypes {
 
         }
     },
-    HEAVY_FIGHTER("Schwerer Jäger", 6_000, 1_000, 0, 10_000, 25, 150, 10_000, 100, 75) {
+    HEAVY_FIGHTER("Schwerer Jäger", "sJ", 6_000, 1_000, 0, 10_000, 25, 150, 10_000, 100, 75) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -62,7 +63,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    CRUISER("Kreuzer", 20_000, 7_000, 2_000, 27_000, 50, 400, 15_000, 800, 300) {
+    CRUISER("Kreuzer", "xer", 20_000, 7_000, 2_000, 27_000, 50, 400, 15_000, 800, 300) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -85,7 +86,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    BATTLESHIP("Schlachtschiff", 45_000, 15_000, 0, 60_000, 200, 1_000, 10_000, 1_500, 500) {
+    BATTLESHIP("Schlachtschiff", "ss", 45_000, 15_000, 0, 60_000, 200, 1_000, 10_000, 1_500, 500) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -108,7 +109,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    BATTLE_CRUISER("Schlachtkreuzer", 30_000, 40_000, 15_000, 70_000, 400, 700, 10_000, 750, 250) {
+    BATTLE_CRUISER("Schlachtkreuzer", "sxer", 30_000, 40_000, 15_000, 70_000, 400, 700, 10_000, 750, 250) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -131,7 +132,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    BOMBER("Bomber", 50_000, 25_000, 15_000, 75_000, 500, 1_000, 5_000, 500, 1_000) {
+    BOMBER("Bomber", "bomber", 50_000, 25_000, 15_000, 75_000, 500, 1_000, 5_000, 500, 1_000) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -154,7 +155,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    DESTROYER("Zerstörer", 60_000, 50_000, 15_000, 110_000, 500, 2000, 5_000, 2_000, 1_000) {
+    DESTROYER("Zerstörer", "zerr", 60_000, 50_000, 15_000, 110_000, 500, 2000, 5_000, 2_000, 1_000) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -177,7 +178,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    DEATH_STAR("Todesstern", 5_000_000, 4_000_000, 1_000_000, 9_000_000, 50_000, 200_000, 100, 1_000_000, 1) {
+    DEATH_STAR("Todesstern", "rip", 5_000_000, 4_000_000, 1_000_000, 9_000_000, 50_000, 200_000, 100, 1_000_000, 1) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -216,7 +217,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    SMALL_TRANSPORTER("Kleiner Transporter", 2_000, 2_000, 0, 4_000, 10, 5, 10_000, 5_000, 20, true) {
+    SMALL_TRANSPORTER("Kleiner Transporter", "kT", 2_000, 2_000, 0, 4_000, 10, 5, 10_000, 5_000, 20, true) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -239,7 +240,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    BIG_TRANSPORTER("Großer Transporter", 6_000, 6_000, 0, 12_000, 25, 5, 7_500, 25_000, 50, true) {
+    BIG_TRANSPORTER("Großer Transporter", "gT", 6_000, 6_000, 0, 12_000, 25, 5, 7_500, 25_000, 50, true) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -262,7 +263,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    COLONYSHIP("Kolonieschiff", 10_000, 20_000, 10_000, 30_000, 100, 50, 2_500, 7_500, 1000, true) {
+    COLONYSHIP("Kolonieschiff", "kolo", 10_000, 20_000, 10_000, 30_000, 100, 50, 2_500, 7_500, 1000, true) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -285,7 +286,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    RECYCLER("Recycler", 10_000, 6_000, 2_000, 16_000, 10, 1, 2_000, 20_000, 300, true) {
+    RECYCLER("Recycler", "rec", 10_000, 6_000, 2_000, 16_000, 10, 1, 2_000, 20_000, 300, true) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -307,7 +308,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    SPY_SONDE("Spionagesonde", 0, 1_000, 0, 1_000, 0.01, 0.01, 100_000_000, 0, 1, true) {
+    SPY_SONDE("Spionagesonde", "spio", 0, 1_000, 0, 1_000, 0.01, 0.01, 100_000_000, 0, 1, true) {
         private RapidFire rapidFire;private Requirement requirement;
 
         @Override
@@ -339,7 +340,7 @@ public enum ShipType implements ShipTypes {
             return requirement;
         }
     },
-    SOLAR_SATELLITE("Solarsatellit", 0, 2_000, 500, 2_000, 1, 1, 0, 0, 0, true) {
+    SOLAR_SATELLITE("Solarsatellit", "sat", 0, 2_000, 500, 2_000, 1, 1, 0, 0, 0, true) {
         private RapidFire rapidFire;
         private Requirement requirement;
 
@@ -375,6 +376,7 @@ public enum ShipType implements ShipTypes {
     };
 
     private final String name;
+    private final String abbrevation;
     private final int metalCost;
     private final int crystalCost;
     private final int deutCost;
@@ -386,8 +388,9 @@ public enum ShipType implements ShipTypes {
     private final int consumption;
     private boolean civil = false;
 
-    ShipType(String name, int metalCost, int crystalCost, int deutCost, int structurePoints, double shield, double attack, int speed, int capacity, int consumption, boolean civil) {
+    ShipType(String name, String abbrevation, int metalCost, int crystalCost, int deutCost, int structurePoints, double shield, double attack, int speed, int capacity, int consumption, boolean civil) {
         this.name = name;
+        this.abbrevation = abbrevation;
         this.metalCost = metalCost;
         this.crystalCost = crystalCost;
         this.deutCost = deutCost;
@@ -401,8 +404,9 @@ public enum ShipType implements ShipTypes {
     }
 
 
-    ShipType(String name, int metalCost, int crystalCost, int deutCost, int structurePoints, double shield, double attack, int speed, int capacity, int consumption) {
+    ShipType(String name, String abbrevation, int metalCost, int crystalCost, int deutCost, int structurePoints, double shield, double attack, int speed, int capacity, int consumption) {
         this.name = name;
+        this.abbrevation = abbrevation;
         this.metalCost = metalCost;
         this.crystalCost = crystalCost;
         this.deutCost = deutCost;
@@ -412,6 +416,14 @@ public enum ShipType implements ShipTypes {
         this.speed = speed;
         this.capacity = capacity;
         this.consumption = consumption;
+    }
+
+    public String getAbbrevation() {
+        return abbrevation;
+    }
+
+    public boolean isCivil() {
+        return civil;
     }
 
     @Override
@@ -425,9 +437,10 @@ public enum ShipType implements ShipTypes {
     }
 
     @Override
-    public Ship create() {
-        return new Ship(getRapidFire(), structurePoints, shield, attack, speed, capacity, consumption, this);
+    public Ships create() {
+        return new Ships(structurePoints, shield, attack, speed, capacity, consumption, this);
     }
+
 
     @Override
     public String toString() {

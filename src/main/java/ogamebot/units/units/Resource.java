@@ -1,7 +1,8 @@
 package ogamebot.units.units;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import gorgon.external.DataAccess;
+import gorgon.external.GorgonEntry;
+import ogamebot.data.daos.ResourceDao;
 import tools.Condition;
 
 import java.math.BigInteger;
@@ -9,10 +10,11 @@ import java.math.BigInteger;
 /**
  *
  */
-public class Resource {
-    private ObjectProperty<BigInteger> metal = new SimpleObjectProperty<>(BigInteger.ZERO);
-    private ObjectProperty<BigInteger> crystal = new SimpleObjectProperty<>(BigInteger.ZERO);
-    private ObjectProperty<BigInteger> deut = new SimpleObjectProperty<>(BigInteger.ZERO);
+@DataAccess(ResourceDao.class)
+public class Resource implements GorgonEntry {
+    private BigInteger metal = BigInteger.ZERO;
+    private BigInteger crystal = BigInteger.ZERO;
+    private BigInteger deut = BigInteger.ZERO;
 
     public Resource() {
         this(0, 0, 0);
@@ -20,55 +22,79 @@ public class Resource {
 
     public Resource(BigInteger metal, BigInteger crystal, BigInteger deut) {
         Condition.check().nonNull(metal, crystal, deut);
-        this.metal.set(metal);
-        this.crystal.set(crystal);
-        this.deut.set(deut);
+        this.metal = metal;
+        this.crystal = crystal;
+        this.deut = deut;
     }
 
     public Resource(int metal, int crystal, int deut) {
         Condition.check().positive(metal, crystal, deut);
-        this.metal.set(BigInteger.valueOf(metal));
-        this.crystal.set(BigInteger.valueOf(crystal));
-        this.deut.set(BigInteger.valueOf(deut));
+        this.metal = BigInteger.valueOf(metal);
+        this.crystal = BigInteger.valueOf(crystal);
+        this.deut = BigInteger.valueOf(deut);
+
     }
 
     public Resource(long metal, long crystal, long deut) {
         Condition.check().positive(metal, crystal, deut);
-        this.metal.set(BigInteger.valueOf(metal));
-        this.crystal.set(BigInteger.valueOf(crystal));
-        this.deut.set(BigInteger.valueOf(deut));
+        this.metal = BigInteger.valueOf(metal);
+        this.crystal = BigInteger.valueOf(crystal);
+        this.deut = BigInteger.valueOf(deut);
     }
 
     public BigInteger getMetal() {
-        return metal.get();
-    }
-
-    public BigInteger getCrystal() {
-        return crystal.get();
-    }
-
-    public BigInteger getDeut() {
-        return deut.get();
-    }
-
-    public ObjectProperty<BigInteger> metalProperty() {
         return metal;
     }
 
-    public ObjectProperty<BigInteger> crystalProperty() {
+    public BigInteger getCrystal() {
         return crystal;
     }
 
-    public ObjectProperty<BigInteger> deutProperty() {
+    public BigInteger getDeut() {
         return deut;
+    }
+
+    public Resource add(Resource resource) {
+        final BigInteger newMet = getMetal().add(resource.getMetal());
+        final BigInteger newCrys = getCrystal().add(resource.getCrystal());
+        final BigInteger newDeut = getDeut().add(resource.getDeut());
+
+        return new Resource(newMet, newCrys, newDeut);
+    }
+
+    public Resource subtract(Resource resource) {
+        final BigInteger newMet = getMetal().subtract(resource.getMetal());
+        final BigInteger newCrys = getCrystal().subtract(resource.getCrystal());
+        final BigInteger newDeut = getDeut().subtract(resource.getDeut());
+
+        return new Resource(newMet, newCrys, newDeut);
     }
 
     @Override
     public String toString() {
         return "Resource{" +
-                "metal=" + metal.get() +
-                ", crystal=" + crystal.get() +
-                ", deut=" + deut.get() +
+                "metal=" + metal +
+                ", crystal=" + crystal +
+                ", deut=" + deut +
                 '}';
+    }
+
+    @Override
+    public int compareTo(GorgonEntry gorgonEntry) {
+        if (gorgonEntry == null) return -1;
+        if (gorgonEntry == this) return 0;
+        if (gorgonEntry.getClass() != getClass()) return -1;
+
+        Resource resource = (Resource) gorgonEntry;
+        int compare = getMetal().compareTo(resource.getMetal());
+
+        if (compare == 0) {
+            compare = getCrystal().compareTo(resource.getCrystal());
+        }
+
+        if (compare == 0) {
+            compare = getDeut().compareTo(resource.getDeut());
+        }
+        return compare;
     }
 }

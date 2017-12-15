@@ -1,10 +1,11 @@
 package ogamebot.comp;
 
+import ogamebot.units.RequireAble;
 import ogamebot.units.astroObjects.CelestialBody;
 import ogamebot.units.building.Building;
 import ogamebot.units.building.BuildingType;
 import ogamebot.units.research.Research;
-import ogamebot.units.research.ResearchFields;
+import ogamebot.units.research.ResearchField;
 import ogamebot.units.research.ResearchType;
 
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class Requirement {
             currentLevel = building.getCounter();
 
         } else if (requireAble instanceof ResearchType) {
-            final Research research = body.getPlayer().getResearch((ResearchFields) requireAble);
+            final Research research = body.getPlayer().getResearch((ResearchField) requireAble);
             currentLevel = research.getCounter();
         }
         return minLevel < currentLevel;

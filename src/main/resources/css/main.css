@@ -1,9 +1,9 @@
 .root {
-    textColor: #dbd9d9;
+    textColor: #bbbdc1;
     -fx-base: base;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
-    base: #252526;
+    base: #090a0c;
 }
 .text{
     -fx-fill: textColor;
@@ -20,6 +20,31 @@
 .status-bar{
   -fx-background-insets: 0,0,0,0;
   -fx-background-color: linear-gradient(to bottom, derive(base, 50%)1%,derive(base, 30%),derive(base, 10%), base);
+}
+#planet-List .list-cell:even{
+    -fx-background-color: #0d1015;
+    -fx-fill: textColor;
+
+}
+#planet-List{
+    -fx-background-color: #0d1015;
+}
+#planet-List .list-cell{
+    -fx-fill: textColor;
+}
+#planet-List .list-cell:hover{
+    -fx-fill: white;
+}
+#planet-List .list-cell:even:selected{
+    -fx-fill: textColor;
+    -fx-background-color: grey;
+}
+#planet-List .list-cell:odd{
+    -fx-background-color: #0d1015;
+}
+#planet-List .list-cell:odd:selected{
+    -fx-fill: white;
+    -fx-background-color: grey;
 }
 .menu-bar{
     -fx-background-insets: 0,0,0,0;

@@ -1,25 +1,28 @@
 package ogamebot.units.research;
 
+import gorgon.external.DataAccess;
+import gorgon.external.GorgonEntry;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import ogamebot.comp.Cost;
 import ogamebot.comp.UpgradeAble;
-import ogamebot.units.UnitType;
+import ogamebot.data.daos.ResearchDao;
 
 /**
  *
  */
-public class Research implements UpgradeAble {
-    private final ResearchFields fields;
+@DataAccess(ResearchDao.class)
+public class Research implements UpgradeAble, GorgonEntry {
+    private final ResearchField fields;
     private final ReadOnlyStringProperty name;
     private IntegerProperty level = new SimpleIntegerProperty();
 
 
-    public Research(ResearchFields fields) {
-        this.fields = fields;
-        name = new SimpleStringProperty(fields.getName());
+    public Research(ResearchField field) {
+        this.fields = field;
+        name = new SimpleStringProperty(field.getName());
     }
 
     @Override
@@ -47,14 +50,10 @@ public class Research implements UpgradeAble {
         return level.get();
     }
 
-    @Override
-    public UnitType<?> getType() {
-        return fields;
-    }
-
-    @Override
-    public int compareTo(UpgradeAble o) {
-        return 0;
+    public static Research create(ResearchField field, Integer level) {
+        final Research research = new Research(field);
+        research.counterProperty().set(level);
+        return research;
     }
 
     @Override
@@ -73,10 +72,25 @@ public class Research implements UpgradeAble {
     }
 
     @Override
+    public ResearchField getType() {
+        return fields;
+    }
+
+    @Override
     public String toString() {
         return "Research{" +
-                "name=" + name +
-                ", level=" + level +
+                "name=" + name.get() +
+                ", level=" + level.get() +
                 '}';
+    }
+
+    @Override
+    public int compareTo(GorgonEntry gorgonEntry) {
+        if (gorgonEntry == null) return -1;
+        if (gorgonEntry == this) return 0;
+        if (gorgonEntry.getClass() != getClass()) return -1;
+
+        Research research = (Research) gorgonEntry;
+        return getName().compareTo(research.getName());
     }
 }

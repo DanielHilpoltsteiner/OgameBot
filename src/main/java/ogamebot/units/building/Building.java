@@ -1,27 +1,32 @@
 package ogamebot.units.building;
 
+import gorgon.external.DataAccess;
+import gorgon.external.GorgonEntry;
 import javafx.beans.property.*;
 import ogamebot.comp.Cost;
 import ogamebot.comp.UpgradeAble;
-import ogamebot.units.UnitType;
+import ogamebot.data.daos.BuildingsDao;
 
 /**
  *
  */
-public class Building implements UpgradeAble {
+@DataAccess(BuildingsDao.class)
+public class Building implements UpgradeAble, GorgonEntry {
     private final ReadOnlyStringProperty name;
     private IntegerProperty level = new SimpleIntegerProperty();
-    private UnitType<Building> type;
+    private BuildingType type;
     private DoubleProperty output = new SimpleDoubleProperty(1);
 
-    public Building(UnitType<Building> type) {
+    public Building(BuildingType type) {
         this.type = type;
         name = new SimpleStringProperty(type.getName());
-        level.addListener((observable, oldValue, newValue) -> System.out.println(newValue));
     }
 
-    public UnitType<Building> getType() {
-        return type;
+    public static Building create(BuildingType buildingType, Integer level, double output) {
+        final Building building = new Building(buildingType);
+        building.counterProperty().set(level);
+        building.outputProperty().setValue(output);
+        return building;
     }
 
     @Override
@@ -49,11 +54,6 @@ public class Building implements UpgradeAble {
         return level.get();
     }
 
-    @Override
-    public int compareTo(UpgradeAble o) {
-        return 0;
-    }
-
     public double getOutput() {
         return output.get();
     }
@@ -77,11 +77,25 @@ public class Building implements UpgradeAble {
         return getName().hashCode();
     }
 
+    public BuildingType getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return "Building{" +
-                "name=" + name +
-                ", level=" + level +
+                "name=" + name.get() +
+                ", level=" + level.get() +
                 '}';
+    }
+
+    @Override
+    public int compareTo(GorgonEntry gorgonEntry) {
+        if (gorgonEntry == null) return -1;
+        if (gorgonEntry == this) return 0;
+        if (gorgonEntry.getClass() != getClass()) return -1;
+
+        Building building = (Building) gorgonEntry;
+        return getName().compareTo(building.getName());
     }
 }

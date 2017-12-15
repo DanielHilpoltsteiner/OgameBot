@@ -1,61 +1,68 @@
 package ogamebot.units.astroObjects;
 
-import javafx.beans.binding.Bindings;
+import gorgon.external.DataAccess;
+import gorgon.external.GorgonEntry;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import ogamebot.comp.Player;
+import ogamebot.comp.Position;
+import ogamebot.data.daos.MoonDao;
 import ogamebot.units.UnitType;
 import ogamebot.units.building.Building;
-import ogamebot.units.building.MoonBuilding;
+import ogamebot.units.building.BuildingType;
+import ogamebot.units.building.Buildings;
 import ogamebot.units.units.Resource;
-import ogamebot.units.warfare.DefenceUnit;
-import ogamebot.units.warfare.Ship;
+import ogamebot.units.warfare.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
  *
  */
-public class Moon implements CelestialBody {
+@DataAccess(MoonDao.class)
+public class Moon implements CelestialBody, GorgonEntry {
     private int maxT;
     private int fields;
     private String name;
-    private NumberBinding usedFields;
 
-    private Planet planet;
-    private Map<MoonBuilding, Building> buildingMap = new HashMap<>();
+    private Planet owner;
     private ObjectProperty<Resource> resource;
 
-    private Map<UnitType<Ship>, Ship> ships = new HashMap<>();
-    private Map<UnitType<DefenceUnit>, DefenceUnit> defences = new HashMap<>();
+    private Buildings buildings = Buildings.moonBuildings();
+    private Fleet fleet = new StationaryFleet(this);
+    private Defence defence = new Defence(this);
 
     public Moon() {
         resource = new SimpleObjectProperty<>(new Resource());
     }
 
+    public Moon(int maxT, int fields, String name, Collection<Building> buildings, Resource resource, Collection<Ships> ships, Collection<DefenceUnit> defences) {
+        this.maxT = maxT;
+        this.fields = fields;
+        this.name = name;
+        this.resource.set(resource);
+
+        this.defence = new Defence(this, defences);
+        this.fleet = new StationaryFleet(this, ships);
+        this.buildings = Buildings.moonBuildings(buildings);
+    }
+
+    public Moon(int maxT, int fields, String name) {
+        this.maxT = maxT;
+        this.fields = fields;
+        this.name = name;
+    }
+
     @Override
-    public Building getBuilding(UnitType<Building> type) {
-        if (!(type instanceof MoonBuilding)) {
-            throw new IllegalArgumentException();
-        }
-        Building building = buildingMap.get(type);
+    public Building getBuilding(BuildingType type) {
+        return buildings.getValue(type);
+    }
 
-        if (building == null) {
-            building = type.create();
-
-            if (usedFields == null) {
-                usedFields = Bindings.add(0, building.counterProperty());
-            } else {
-                usedFields.add(building.counterProperty());
-            }
-
-            buildingMap.put((MoonBuilding) type, building);
-        }
-
-        return building;
+    @Override
+    public Buildings getBuilding() {
+        return buildings;
     }
 
     @Override
@@ -72,40 +79,40 @@ public class Moon implements CelestialBody {
     }
 
     public Number getUsedFields() {
-        return usedFields.getValue();
+        return usedFieldsProperty().getValue();
     }
 
+    @Override
     public NumberBinding usedFieldsProperty() {
-        return usedFields;
+        return buildings.usedFieldsProperty();
     }
 
     @Override
     public Player getPlayer() {
-        return planet.getPlayer();
+        return owner.getPlayer();
     }
 
     @Override
-    public Ship getShip(UnitType<Ship> type) {
-        Ship ship = ships.get(type);
-
-        if (ship == null) {
-            ship = type.create();
-            ships.put(type, ship);
-        }
-
-        return ship;
+    public Ships getShip(UnitType<Ships> type) {
+        return fleet.getValue((ShipType) type);
     }
 
     @Override
     public DefenceUnit getDefence(UnitType<DefenceUnit> type) {
-        DefenceUnit defenceUnit = defences.get(type);
+        return defence.getValue((DefenceType) type);
+    }
 
-        if (defenceUnit == null) {
-            defenceUnit = type.create();
-            defences.put(type, defenceUnit);
-        }
+    public Collection<Ships> getShips() {
+        return fleet.getFleet();
+    }
 
-        return defenceUnit;
+    public Collection<DefenceUnit> getDefences() {
+        return defence.getValues();
+    }
+
+    @Override
+    public Collection<Building> getBuildings() {
+        return buildings.getValues();
     }
 
     @Override
@@ -113,8 +120,43 @@ public class Moon implements CelestialBody {
         return resource;
     }
 
-    void setPlanet(Planet planet) {
-        Objects.requireNonNull(planet);
-        this.planet = planet;
+    public Planet getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Planet owner) {
+        Objects.requireNonNull(owner);
+        this.owner = owner;
+    }
+
+    @Override
+    public int compareTo(GorgonEntry gorgonEntry) {
+        if (gorgonEntry == null) return -1;
+        if (gorgonEntry == this) return 0;
+        if (gorgonEntry.getClass() != getClass()) return -1;
+
+        Moon moon = (Moon) gorgonEntry;
+
+        int compare = getName().compareTo(moon.getName());
+
+        if (compare == 0) {
+            compare = getOwner().compareTo(moon.getOwner());
+        }
+        return compare;
+    }
+
+    @Override
+    public Position getPosition() {
+        return owner.getPosition();
+    }
+
+    @Override
+    public Fleet getFleet() {
+        return fleet;
+    }
+
+    @Override
+    public Defence getDefence() {
+        return defence;
     }
 }

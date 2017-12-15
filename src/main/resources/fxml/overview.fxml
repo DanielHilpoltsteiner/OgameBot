@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <TabPane xmlns:fx="http://javafx.com/fxml/1" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/9.0.1"
-         fx:controller="ogamebot.gui.OverView">
+         fx:controller="ogamebot.gui.overview.OverView">
     <tabs>
         <Tab text="Spieler">
             <content>
@@ -44,122 +44,94 @@
         </Tab>
         <Tab text="Planeten">
             <content>
-                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                    <left>
-                        <VBox BorderPane.alignment="CENTER">
+                <VBox fx:id="planetContent">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
-                                <ListView fx:id="planetList" focusTraversable="false" prefHeight="200.0"
-                                          prefWidth="150.0" VBox.vgrow="ALWAYS"/>
-                                <HBox prefWidth="200.0" spacing="10.0">
-                                    <children>
-                                        <TextField fx:id="planetTextField" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
-                                        <Button fx:id="addPlanetBtn" mnemonicParsing="false" onAction="#addPlanet"
-                                                prefHeight="25.0" text="+ Planet" HBox.hgrow="SOMETIMES"/>
-                                    </children>
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" top="5.0"/>
-                                    </VBox.margin>
-                                </HBox>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metall:" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets/>
+                                    </HBox.margin>
+                                    <styleClass>
+                                        <String fx:value="overViewText"/>
+                                        <String fx:value="overViewGridText"/>
+                                    </styleClass>
+                                </Text>
+                                <Text fx:id="metalValue" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      styleClass="overViewText"/>
+                                <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kristall:">
+                                    <HBox.margin>
+                                        <Insets/>
+                                    </HBox.margin>
+                                    <styleClass>
+                                        <String fx:value="overViewText"/>
+                                        <String fx:value="overViewGridText"/>
+                                    </styleClass>
+                                </Text>
+                                <Text fx:id="crystalValue" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      styleClass="overViewText"/>
+                                <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deuterium:">
+                                    <HBox.margin>
+                                        <Insets/>
+                                    </HBox.margin>
+                                    <styleClass>
+                                        <String fx:value="overViewText"/>
+                                        <String fx:value="overViewGridText"/>
+                                    </styleClass>
+                                </Text>
+                                <Text fx:id="deutValue" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      styleClass="overViewText"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Hyperlink fx:id="detailsLink" alignment="CENTER_RIGHT" onAction="#showDetails"
+                                           text="Erweitert" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets/>
+                                    </HBox.margin>
+                                </Hyperlink>
                             </children>
-                            <BorderPane.margin>
-                                <Insets/>
-                            </BorderPane.margin>
                             <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets left="5.0"/>
                             </padding>
-                        </VBox>
-                    </left>
-                    <center>
-                        <VBox fx:id="planetContent" BorderPane.alignment="CENTER">
-                            <BorderPane.margin>
-                                <Insets/>
-                            </BorderPane.margin>
-                            <children>
-                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                        </HBox>
+                        <ScrollPane id="overViewScrollPane" fitToWidth="true" styleClass="scrollPane">
+                            <content>
+                                <FlowPane hgap="10.0" prefWrapLength="500.0" rowValignment="TOP" vgap="5.0">
                                     <children>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metall:" HBox.hgrow="ALWAYS">
-                                            <HBox.margin>
+                                        <TitledPane animated="false" text="Gebäude">
+                                            <content>
+                                                <GridPane fx:id="buildingGrid" styleClass="overViewGrid">
+                                                        </GridPane>
+                                            </content>
+                                            <FlowPane.margin>
                                                 <Insets/>
-                                            </HBox.margin>
-                                            <styleClass>
-                                                <String fx:value="overViewText"/>
-                                                <String fx:value="overViewGridText"/>
-                                            </styleClass>
-                                        </Text>
-                                        <Text fx:id="metalValue" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              styleClass="overViewText"/>
-                                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kristall:">
-                                            <HBox.margin>
-                                                <Insets/>
-                                            </HBox.margin>
-                                            <styleClass>
-                                                <String fx:value="overViewText"/>
-                                                <String fx:value="overViewGridText"/>
-                                            </styleClass>
-                                        </Text>
-                                        <Text fx:id="crystalValue" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              styleClass="overViewText"/>
-                                        <Region maxWidth="20.0" HBox.hgrow="ALWAYS"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deuterium:">
-                                            <HBox.margin>
-                                                <Insets/>
-                                            </HBox.margin>
-                                            <styleClass>
-                                                <String fx:value="overViewText"/>
-                                                <String fx:value="overViewGridText"/>
-                                            </styleClass>
-                                        </Text>
-                                        <Text fx:id="deutValue" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              styleClass="overViewText"/>
-                                        <Region HBox.hgrow="ALWAYS"/>
-                                        <Hyperlink fx:id="detailsLink" alignment="CENTER_RIGHT" onAction="#showDetails"
-                                                   text="Erweitert" HBox.hgrow="ALWAYS">
-                                            <HBox.margin>
-                                                <Insets/>
-                                            </HBox.margin>
-                                        </Hyperlink>
+                                            </FlowPane.margin>
+                                        </TitledPane>
+                                        <TitledPane animated="false" text="Schiffe">
+                                            <content>
+                                                <GridPane fx:id="shipGrid" styleClass="overViewGrid">
+                                                        </GridPane>
+                                            </content>
+                                        </TitledPane>
+                                        <TitledPane animated="false" text="Verteidigungsanlagen">
+                                            <content>
+                                                <GridPane fx:id="defenceGrid" styleClass="overViewGrid">
+                                                        </GridPane>
+                                            </content>
+                                        </TitledPane>
                                     </children>
-                                    <padding>
-                                        <Insets left="5.0"/>
-                                    </padding>
-                                </HBox>
-                                <ScrollPane id="overViewScrollPane" fitToWidth="true" styleClass="scrollPane">
-                                    <content>
-                                        <FlowPane hgap="10.0" prefWrapLength="500.0" rowValignment="TOP" vgap="5.0">
-                                            <children>
-                                                <TitledPane animated="false" text="Gebäude">
-                                                    <content>
-                                                        <GridPane fx:id="buildingGrid" styleClass="overViewGrid">
-                                                        </GridPane>
-                                                    </content>
-                                                    <FlowPane.margin>
-                                                        <Insets/>
-                                                    </FlowPane.margin>
-                                                </TitledPane>
-                                                <TitledPane animated="false" text="Schiffe">
-                                                    <content>
-                                                        <GridPane fx:id="shipGrid" styleClass="overViewGrid">
-                                                        </GridPane>
-                                                    </content>
-                                                </TitledPane>
-                                                <TitledPane animated="false" text="Verteidigungsanlagen">
-                                                    <content>
-                                                        <GridPane fx:id="defenceGrid" styleClass="overViewGrid">
-                                                        </GridPane>
-                                                    </content>
-                                                </TitledPane>
-                                            </children>
-                                        </FlowPane>
-                                    </content>
-                                    <padding>
-                                        <Insets top="5.0"/>
-                                    </padding>
-                                </ScrollPane>
-                            </children>
-                        </VBox>
-                    </center>
-                </BorderPane>
+                                </FlowPane>
+                            </content>
+                            <padding>
+                                <Insets top="5.0"/>
+                            </padding>
+                        </ScrollPane>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                </VBox>
             </content>
         </Tab>
     </tabs>

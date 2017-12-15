@@ -1,7 +1,7 @@
 package ogamebot.units.research;
 
-import ogamebot.comp.RequireAble;
 import ogamebot.units.Effector;
+import ogamebot.units.RequireAble;
 
 /**
  *

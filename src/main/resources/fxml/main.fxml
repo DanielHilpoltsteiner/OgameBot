@@ -4,9 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import org.controlsfx.control.HiddenSidesPane?>
 <?import org.controlsfx.control.StatusBar?>
 <?import java.lang.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" prefHeight="500.0" prefWidth="720.0"
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" alignment="CENTER" prefHeight="500.0" prefWidth="1000.0"
       stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="ogamebot.gui.Main">
     <children>
         <MenuBar fx:id="menuBar">
@@ -40,9 +41,14 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
+        <ButtonBar buttonMinWidth="20.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
             <buttons>
-                <Button mnemonicParsing="false" text="Button"/>
+                <Button fx:id="addPlanetBtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addPlanet"
+                        prefHeight="30.0" prefWidth="30.0"/>
+                <Button fx:id="addPlayerBtn" contentDisplay="CENTER" layoutX="645.0" layoutY="10.0"
+                        mnemonicParsing="false" onAction="#addPlayer" prefHeight="30.0" prefWidth="30.0"/>
+                <Button fx:id="addUniverseBtn" contentDisplay="CENTER" layoutX="645.0" layoutY="10.0"
+                        mnemonicParsing="false" onAction="#addUniverse" prefHeight="30.0" prefWidth="30.0"/>
             </buttons>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -93,13 +99,20 @@
                 </Text>
             </children>
         </HBox>
-        <HBox VBox.vgrow="ALWAYS">
-            <children>
+        <HiddenSidesPane fx:id="hiddenUniTree" triggerDistance="50">
+            <content>
+                <HBox VBox.vgrow="ALWAYS">
+                    <children>
+                        <ListView id="planet-List" fx:id="celestialBodyList" prefWidth="200.0" HBox.hgrow="NEVER"/>
+                        <TabPane fx:id="playerContent" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+            </content>
+            <left>
                 <TreeView fx:id="uniPlayerTree" maxWidth="400.0" minWidth="50.0" prefHeight="399.0" prefWidth="208.0"
                           showRoot="false" HBox.hgrow="SOMETIMES"/>
-                <TabPane fx:id="playerContent" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS"/>
-            </children>
-        </HBox>
+            </left>
+        </HiddenSidesPane>
         <StatusBar styleClass="status-bar"/>
     </children>
 </VBox>
